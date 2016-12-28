@@ -12,4 +12,4 @@ android:
 
 script:
   - ./gradlew clean
-  - ./gradlew dualcache-library:check -Ptravis
+  - ./gradlew library:check -Ptravis
