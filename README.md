@@ -41,35 +41,31 @@ For a better performance, I recommend that you use larger size for the disk laye
 
 To see a deply description for base dualcache work flow visit [dualcache](https://github.com/vincentbrison/dualcache).
 
-The Philosophy behind this library
-==================================
+# Explanation
+
 When you want to use a [cache] (http://en.wikipedia.org/wiki/Cache_\(computing\)) on Android today, you have two possibilities. You whether use :
  - The [LruCache] (http://developer.android.com/reference/android/util/LruCache.html) included into the Android SDK.
+  - Works on RAM
+  - Very fast access to your cache.
+  - High resources constraints, since the RAM allocated to your application is used for caching.
+  - Not persistent among different execution of your app.
  - The [DiskLruCache] (https://github.com/JakeWharton/DiskLruCache) of Jake Wharton.
-
-The thing is the first one only works in RAM, and the second one only on disk (internal memory of the phone). So you need to choose
-whether if you will use the [LruCache] (http://developer.android.com/reference/android/util/LruCache.html) (RAM) :
- - Very fast access to your cache.
- - High resources constraints, since the RAM allocated to your application is used for caching.
- - Not persistent among different execution of your app.
-
-Or you will use the [DiskLruCache] (https://github.com/JakeWharton/DiskLruCache) (Disk) :
- - Slower access time than the LruCache.
- - Almost no resources constraints, since the size used on the disk (internal memory), will not impact your application.
- - Persistent among different execution of your app.
+  - Works on Disk
+  - Slower access time than the LruCache.
+  - Almost no resources constraints, since the size used on the disk (internal memory), will not impact your application.
+  - Persistent among different execution of your app.
 
 The purpose of this library is to provide both features of these two caches, by making them working together. You do not need
 to ask yourself anymore "Should I use this one or this one ? But this one is persistent, but the other one is faster...".
 With this library you only use one cache, with two layers, one in RAM, and one in Disk and you configure how they have to work
 to provide exactly what you need in term of caching for you application.
 
-Setup
-=====
+# Setup
 
-- Ensure you can pull artifacts from Maven Central :
+- Ensure you can pull artifacts from JitPack :
 ```gradle
 repositories {
-    mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 ```
 - And add to your module gradle file :
@@ -82,17 +78,13 @@ android {
 }
 
 dependencies {
-    compile 'com.vincentbrison.openlibraries.android:dualcache:3.1.1'
-
-    //compile 'com.vincentbrison.openlibraries.android:dualcache-jsonserializer:3.1.1' // If you
-    // want a ready to use json serializer
+    compile 'com.github.iagocanalejas:dualcache:<VERSION>'
 }
 ```
 
 All the configuration of the cache is done when you are building the cache through its `Builder` class.
 
-Basic examples
-==============
+# Basic examples
 
 Build your cache
 ---------------
@@ -139,22 +131,21 @@ DummyClass object = null;
 object = cache.get("mykey");
 ```
 
-Use cases
-=========
+# Use cases
+
  - Using default serialization on RAM and on disk can be very useful for caching network exchange of data.
  - Using references in RAM and serialization on disk can be very useful to cache bitmaps.
 
-Javadoc
-=======
-The javadoc provided with this library is fully written and released on Maven.
+# Pull Requests
+I welcome and encourage all pull requests. Here are some basic rules to follow to ensure timely addition of your request:
+  1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (on Mac) or Ctrl+Alt+L on Windows to reformat code with Android Studio defaults.
+  2. Pull Request must pass all tests `gradlew connectedAndroidTest` and `gradlew library:check`
+  2. If its a feature, bugfix, or anything please only change code to what you specify.
+  3. Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge.
+  4. Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.
+  5. Have fun!
 
-Testing
-=======
-All the configurations of the cache are (almost) fully tested through automated tests. If you fork
-this repo, you can launch them with the gradle command `connectedAndroidTest`.
-You need to have a device connected since the tests will be run on every device connected to your computer.
-An emulator or a [GenyMotion] instance is enough.
-A report will be available at : `/{location of your fork}/lib/build/outputs/reports/androidTests/connected/index.html`
+A test report will be available on your project subfolder once you execute the tests.
 
 License
 =======
