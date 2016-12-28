@@ -1,0 +1,37 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+ext {
+    libraryCode = 1
+    libraryName = '1.0.0'
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.2'
+    minSdkVersion = 12
+
+    diskLruVersion = '2.0.2'
+    jacksonDatabindVersion = '2.4.2'
+
+    androidSupportTestRunner = '0.5'
+
+    butterknifeVersion = '8.4.0'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

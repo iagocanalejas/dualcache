@@ -1,0 +1,31 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply from: '../quality/quality.gradle'
+
+android {
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
+
+    defaultConfig {
+        applicationId "es.coru.iagocanalejas.dualcache"
+        minSdkVersion 12
+        targetSdkVersion project.compileSdkVersion
+        versionCode project.libraryCode
+        versionName project.libraryName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    apt "com.jakewharton:butterknife-compiler:${project.butterknifeVersion}"
+
+    compile "com.jakewharton:butterknife:${project.butterknifeVersion}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    compile project(':library')
+}
