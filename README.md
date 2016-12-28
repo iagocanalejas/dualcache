@@ -1,7 +1,7 @@
 Android Dualcache
 =================
 [![API](https://img.shields.io/badge/API-12%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=12)
-[![Build Status](https://travis-ci.org/vincentbrison/dualcache.svg?branch=master)](https://travis-ci.org/vincentbrison/dualcache)
+[![Build Status](https://travis-ci.org/iagocanalejas/dualcache.svg?branch=master)](https://travis-ci.org/iagocanalejas/dualcache)
 [![](https://jitpack.io/v/iagocanalejas/dualcache.svg)](https://jitpack.io/#iagocanalejas/dualcache)
 
 **LIBRARY BASED IN [dualcache](https://github.com/vincentbrison/dualcache)**
