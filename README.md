@@ -1,6 +1,6 @@
 Android Dualcache
 =================
-[![API](https://img.shields.io/badge/API-9%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=9)
+[![API](https://img.shields.io/badge/API-12%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=12)
 [![Build Status](https://travis-ci.org/vincentbrison/dualcache.svg?branch=master)](https://travis-ci.org/vincentbrison/dualcache)
 [![](https://jitpack.io/v/iagocanalejas/dualcache.svg)](https://jitpack.io/#iagocanalejas/dualcache)
 
