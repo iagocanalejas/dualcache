@@ -84,22 +84,10 @@ dependencies {
 
 All the configuration of the cache is done when you are building the cache through its `Builder` class.
 
-# Basic examples
+# Basic Cache Example
 
-Build your cache
----------------
  First of all, you need to build you cache, through the `Builder` class.
- 1. A cache with a serializer for RAM and disk disable :
-
-```Java
-cache = new Builder<>(CACHE_NAME, TEST_APP_VERSION, AbstractVehicule.class)
-    .enableLog()
-    .useSerializerInRam(RAM_MAX_SIZE, new SerializerForTesting())
-    .noDisk()
-    .build();
-```
-
- 2. A cache with references in RAM and a default serializer on disk :
+ Basic cache with references in RAM and a default serializer on disk :
 
 ```Java
 cache = new Builder<>(CACHE_NAME, TEST_APP_VERSION, AbstractVehicule.class)
@@ -118,8 +106,8 @@ Put
 To put an object into your cache, simply call `put` :
 
 ```Java
-DummyClass object = new DummyClass();
-object = cache.put("mykey", object);
+cache.put("mykey", object);
+cache.put("mykey", object, time); //Just for VOLATILE_ENTRY caches
 ```
 
 Get
@@ -133,8 +121,13 @@ object = cache.get("mykey");
 
 # Use cases
 
- - Using default serialization on RAM and on disk can be very useful for caching network exchange of data.
- - Using references in RAM and serialization on disk can be very useful to cache bitmaps.
+ * [Basic Cache without persistence time](docs/basic_cache.md)
+ * [Cache with global persistence time](docs/volatil_cache.md)
+ * [Cache with diferent persistence time for each entry](docs/volatil_cache_entry.md)
+ 
+# CacheSerializer
+ * [With GSON](docs/gson_cache_serializer.md)
+ * [With LoganSquare](docs/logan_cache_serializer.md)
 
 # Pull Requests
 I welcome and encourage all pull requests. Here are some basic rules to follow to ensure timely addition of your request:
