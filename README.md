@@ -6,9 +6,6 @@ Android Dualcache
 
 **LIBRARY BASED IN [dualcache](https://github.com/vincentbrison/dualcache)**
 
-# Added 
- - The option to set a lifetime to entries
-
 # Description
 This android library provide a cache with 2 layers, one in RAM in top of one on local storage.
 Caches can be configured to have a persistence time
@@ -29,13 +26,6 @@ This library is highly configurable :
 
 If you work with `specific serializer` or `references` you will have to provide (through an interface) the
 way of compute the size of cached objects, to be able to correctly execute the [LRU policy] (http://en.wikipedia.org/wiki/Cache_algorithms).
-
-If you do not want to write your own serializer and a json serializer is enough for you, you can use
-`vincentbrison/dualcache-jsonserializer` which will serialize object using [Jackson](https://github.com/FasterXML/jackson-databind)
-
-```ruby
- compile 'com.vincentbrison.openlibraries.android:dualcache-jsonserializer:3.1.1'
-```
 
 For a better performance, I recommend that you use larger size for the disk layer than for the Ram layer. When you try to get an object from the cache which is already in the Ram layer, the disk wont be use to keep the best performance from the Ram. If you try to get an object from the cache which is on disk and not on Ram, the object will be loaded into RAM, to ensure better further access time.
 
@@ -128,6 +118,7 @@ object = cache.get("mykey");
 # CacheSerializer
  * [With GSON](docs/gson_cache_serializer.md)
  * [With LoganSquare](docs/logan_cache_serializer.md)
+ * [With Jackson](docs/jackson_serializer.md)
 
 # Pull Requests
 I welcome and encourage all pull requests. Here are some basic rules to follow to ensure timely addition of your request:
