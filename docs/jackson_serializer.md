@@ -10,11 +10,11 @@ dependencies {
 ```
 
 ```java
-public class JsonSerializer<T> implements CacheSerializer<T> {
+public class JacksonSerializer<T> implements CacheSerializer<T> {
     private final ObjectMapper mapper;
     private final Class<T> clazz;
 
-    public JsonSerializer(Class<T> clazz) {
+    public JacksonSerializer(Class<T> clazz) {
         this.clazz = clazz;
         mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
