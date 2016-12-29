@@ -5,7 +5,7 @@
 
 ```ruby
 dependencies {
-  com.google.code.gson:gson:<VERSION>
+  compile "com.google.code.gson:gson:<VERSION>"
 }
 ```
 
