@@ -1,4 +1,4 @@
-package com.iagocanalejas;
+package com.iagocanalejas.core.utils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

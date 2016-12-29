@@ -8,9 +8,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iagocanalejas.cache.Builder;
-import com.iagocanalejas.cache.DualCache;
-import com.iagocanalejas.cache.interfaces.CacheSerializer;
+import com.iagocanalejas.core.Builder;
+import com.iagocanalejas.core.DualCache;
+import com.iagocanalejas.core.interfaces.CacheSerializer;
 
 import java.util.UUID;
 

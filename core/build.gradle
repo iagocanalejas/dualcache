@@ -1,24 +1,20 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../quality/quality.gradle'
+
+group = 'com.github.iagocanalejas'
 
 android {
     compileSdkVersion project.compileSdkVersion
     buildToolsVersion project.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.iagocanalejas.dualcache"
-        minSdkVersion 12
+        minSdkVersion project.minSdkVersion
         targetSdkVersion project.compileSdkVersion
         versionCode project.libraryCode
         versionName project.libraryName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
 
     packagingOptions {
@@ -32,9 +28,8 @@ android {
 }
 
 dependencies {
-    apt "com.jakewharton:butterknife-compiler:${project.butterknifeVersion}"
+    compile "com.jakewharton:disklrucache:${project.diskLruVersion}"
 
-    compile "com.jakewharton:butterknife:${project.butterknifeVersion}"
-    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
-    compile project(':core')
+    androidTestCompile "com.android.support.test:runner:${project.androidSupportTestRunner}"
+    androidTestCompile "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
 }
