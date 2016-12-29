@@ -62,12 +62,12 @@ public class DualCache<T> {
 
     // Persistence conf
     private final DualCacheVolatileMode mVolatileMode;
-    private final Long mPersistenceTime;
+    private final Long mDefaultPersistenceTime;
 
 
     DualCache(int appVersion, Logger logger, DualCacheRamMode ramMode, CacheSerializer<T> ramSerializer,
               int maxRamSizeBytes, SizeOf<T> sizeOf, DualCacheDiskMode diskMode, CacheSerializer<T> diskSerializer,
-              int maxDiskSizeBytes, File diskFolder, DualCacheVolatileMode volatileMode, Long persistenceTime) {
+              int maxDiskSizeBytes, File diskFolder, DualCacheVolatileMode volatileMode, Long defaultPersistenceTIme) {
 
         this.mAppVersion = appVersion;
         this.mRamMode = ramMode;
@@ -77,7 +77,7 @@ public class DualCache<T> {
         this.mDiskCacheFolder = diskFolder;
         this.mLogger = logger;
         this.mLoggerHelper = new LoggerHelper(logger);
-        this.mPersistenceTime = persistenceTime;
+        this.mDefaultPersistenceTime = defaultPersistenceTIme;
         this.mVolatileMode = volatileMode;
 
         switch (ramMode) {
@@ -178,20 +178,20 @@ public class DualCache<T> {
      *
      * @param key       the key of the object.
      * @param object    the object to put in cache.
-     * @param entryLife persistence time for given entry
+     * @param entryLife persistence time for given entry, <= 0 means persistence entry
      */
     private void putVolatileEntry(String key, T object, long entryLife) {
+        long lifetime = (entryLife > 0)
+                ? Calendar.getInstance().getTimeInMillis() + entryLife
+                : 0; // Same as a persistence entry
+
         if (mRamMode.equals(DualCacheRamMode.ENABLE_WITH_REFERENCE)) {
-            mRamLruCache.put(key, new VolatileCacheEntry<>(
-                    Calendar.getInstance().getTimeInMillis() + entryLife,
-                    object));
+            mRamLruCache.put(key, new VolatileCacheEntry<>(lifetime, object));
         }
 
         String ramSerialized = null;
         if (mRamMode.equals(DualCacheRamMode.ENABLE_WITH_SPECIFIC_SERIALIZER)) {
-            ramSerialized = mVolatileRamSerializer.toString(new VolatileCacheEntry<>(
-                    Calendar.getInstance().getTimeInMillis() + entryLife,
-                    object));
+            ramSerialized = mVolatileRamSerializer.toString(new VolatileCacheEntry<>(lifetime, object));
             mRamLruCache.put(key, ramSerialized);
         }
 
@@ -203,9 +203,7 @@ public class DualCache<T> {
                     // Optimization if using same serializer
                     editor.set(0, ramSerialized);
                 } else {
-                    editor.set(0, mVolatileDiskSerializer.toString(new VolatileCacheEntry<>(
-                            Calendar.getInstance().getTimeInMillis() + entryLife,
-                            object)));
+                    editor.set(0, mVolatileDiskSerializer.toString(new VolatileCacheEntry<>(lifetime, object)));
                 }
                 editor.commit();
             } catch (IOException e) {
@@ -253,15 +251,15 @@ public class DualCache<T> {
     }
 
     /**
-     * Put an object in cache with a lifetime if we are in a {@link DualCacheVolatileMode#VOLATILE_ENTRY} cache
+     * Put an object in cache with a lifetime if we are in a {@link DualCacheVolatileMode#VOLATILE} cache
      *
      * @param key       the key of the object.
      * @param object    the object to put in cache.
      * @param entryLife persistence time for given entry
      */
     public void put(String key, T object, long entryLife) {
-        if (!mVolatileMode.equals(DualCacheVolatileMode.VOLATILE_ENTRY)) {
-            throw new UnsupportedOperationException("Operation only supported for VOLATILE_ENTRY cache type");
+        if (!mVolatileMode.equals(DualCacheVolatileMode.VOLATILE)) {
+            throw new UnsupportedOperationException("Operation only supported for VOLATILE cache type");
         }
         putVolatileEntry(key, object, entryLife);
     }
@@ -273,9 +271,8 @@ public class DualCache<T> {
      * @param object is the object to put in cache.
      */
     public void put(String key, T object) {
-        if (mVolatileMode.equals(DualCacheVolatileMode.VOLATILE_CACHE)
-                || mVolatileMode.equals(DualCacheVolatileMode.VOLATILE_ENTRY)) {
-            putVolatileEntry(key, object, mPersistenceTime); //mPersistenceTime works as default time if we are in VOLATILE_ENTRY
+        if (mVolatileMode.equals(DualCacheVolatileMode.VOLATILE)) {
+            putVolatileEntry(key, object, mDefaultPersistenceTime);
         } else {
             putEntry(key, object);
         }
@@ -453,8 +450,7 @@ public class DualCache<T> {
      * return null.
      */
     public T get(String key) {
-        if (mVolatileMode.equals(DualCacheVolatileMode.VOLATILE_ENTRY)
-                || mVolatileMode.equals(DualCacheVolatileMode.VOLATILE_CACHE)) {
+        if (mVolatileMode.equals(DualCacheVolatileMode.VOLATILE)) {
             return getVolatileEntry(key);
         }
 

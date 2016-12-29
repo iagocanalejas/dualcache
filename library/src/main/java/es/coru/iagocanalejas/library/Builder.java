@@ -2,8 +2,6 @@ package es.coru.iagocanalejas.library;
 
 import android.content.Context;
 
-
-
 import java.io.File;
 
 import es.coru.iagocanalejas.library.interfaces.CacheSerializer;
@@ -44,7 +42,7 @@ public class Builder<T> {
 
     // Persistence conf
     private DualCacheVolatileMode volatileMode;
-    private Long mPersistenceTime;
+    private Long mDefaultPersistenceTime;
 
     /**
      * Start the building of the cache.
@@ -58,7 +56,7 @@ public class Builder<T> {
         this.mAppVersion = appVersion;
         this.mRamMode = null;
         this.mDiskMode = null;
-        this.mPersistenceTime = null;
+        this.mDefaultPersistenceTime = null;
         this.volatileMode = DualCacheVolatileMode.PERSISTENCE; // By default all entries are persistent
         this.mLogEnabled = false;
     }
@@ -88,7 +86,7 @@ public class Builder<T> {
 
         DualCache<T> cache = new DualCache<>(mAppVersion, new Logger(mLogEnabled), mRamMode, mRamSerializer,
                 mMaxRamSizeBytes, mSizeOf, mDiskMode, mDiskSerializer, mMaxDiskSizeBytes, mDiskFolder,
-                volatileMode, mPersistenceTime
+                volatileMode, mDefaultPersistenceTime
         );
 
         boolean isRamDisable = cache.getRAMMode().equals(DualCacheRamMode.DISABLE);
@@ -195,30 +193,23 @@ public class Builder<T> {
     /**
      * Set a persistence time for all cache entries
      *
-     * @param timeInMillis time a cache entry can persist
+     * @param seconds time a cache entry can persist in seconds
      * @return the builder
      */
-    public Builder<T> useVolatileCache(long timeInMillis) {
-        if (volatileMode.equals(DualCacheVolatileMode.VOLATILE_ENTRY)) {
-            throw new IllegalStateException("Incompatible cache modes VOLATILE_CACHE and VOLATILE_ENTRY");
-        }
-        this.mPersistenceTime = timeInMillis;
-        this.volatileMode = DualCacheVolatileMode.VOLATILE_CACHE;
+    public Builder<T> useVolatileCache(long seconds) {
+        this.mDefaultPersistenceTime = seconds * 1000;
+        this.volatileMode = DualCacheVolatileMode.VOLATILE;
         return this;
     }
 
     /**
-     * Allow user to set a different persistence time for each entry
+     * Use this if you do not want use the disk cache layer, meaning that only the ram cache layer
+     * will be used.
      *
-     * @param defaultTime default time for entries
-     * @return the builder
+     * @return the builder.
      */
-    public Builder<T> useVolatileEntry(long defaultTime) {
-        if (volatileMode.equals(DualCacheVolatileMode.VOLATILE_CACHE)) {
-            throw new IllegalStateException("Incompatible cache modes VOLATILE_ENTRY and VOLATILE_CACHE");
-        }
-        this.mPersistenceTime = defaultTime;
-        this.volatileMode = DualCacheVolatileMode.VOLATILE_ENTRY;
+    public Builder<T> noDisk() {
+        this.mDiskMode = DualCacheDiskMode.DISABLE;
         return this;
     }
 
@@ -235,14 +226,4 @@ public class Builder<T> {
         return folder;
     }
 
-    /**
-     * Use this if you do not want use the disk cache layer, meaning that only the ram cache layer
-     * will be used.
-     *
-     * @return the builder.
-     */
-    public Builder<T> noDisk() {
-        this.mDiskMode = DualCacheDiskMode.DISABLE;
-        return this;
-    }
 }

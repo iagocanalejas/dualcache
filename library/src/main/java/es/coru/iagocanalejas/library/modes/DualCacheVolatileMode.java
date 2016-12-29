@@ -11,12 +11,7 @@ public enum DualCacheVolatileMode {
     PERSISTENCE,
 
     /**
-     * Same persistence time for all cache entries
+     * Cache for a persistence time for entries
      */
-    VOLATILE_CACHE,
-
-    /**
-     * Persistence time can be set for each entry
-     */
-    VOLATILE_ENTRY
+    VOLATILE
 }
