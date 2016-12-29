@@ -12,14 +12,14 @@ Caches can be configured to have a persistence time
 This library is highly configurable :
 
 
-| Configurations | Disk : `Specific serializer` | Disk : `disable` |
-| -------------- | -------------------------- | ---------------- |
-| Ram : `Volatil option` | YES | YES |
-| Ram : `Specific serializer` | YES | YES |
-| Ram : `References` | YES | YES |
-| Ram : `disable` | YES | NO |
+| Configurations | Disk : `Specific serializer` | Disk : `Volatil` | Disk: `disable` |
+| -------------- | ---------------------------- | ---------------- | --------------- |
+| Ram : `Volatil` | YES | YES | YES |
+| Ram : `Specific serializer` | YES | YES | YES |
+| Ram : `References` | YES | YES | YES |
+| Ram : `disable` | YES | YES | NO |
 
- - `Volatile option` : the object have maximun lifetime
+ - `Volatile` : the object have maximun lifetime
  - `Specific serializer` : the object stored in cache will be serialized through a serializer provided by yourself.
  - `References` : the objects stored in Ram are cached through there references (no serialization is done).
  - `Disable` : the corresponding layer (Ram or disk) is disable.
