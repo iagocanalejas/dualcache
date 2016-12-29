@@ -15,4 +15,4 @@ before_install:
 
 script:
   - ./gradlew clean
-  - ./gradlew library:check -Ptravis
+  - ./gradlew cache:check -Ptravis
