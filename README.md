@@ -12,14 +12,14 @@ Caches can be configured to have a persistence time
 This library is highly configurable :
 
 
-| Configurations | Disk : `Specific serializer` | Disk : `disable` |
-| -------------- | -------------------------- | ---------------- |
-| Ram : `Volatil option` | YES | YES |
-| Ram : `Specific serializer` | YES | YES |
-| Ram : `References` | YES | YES |
-| Ram : `disable` | YES | NO |
+| Configurations | Disk : `Specific serializer` | Disk : `Volatil` | Disk: `disable` |
+| -------------- | ---------------------------- | ---------------- | --------------- |
+| Ram : `Volatil` | YES | YES | YES |
+| Ram : `Specific serializer` | YES | YES | YES |
+| Ram : `References` | YES | YES | YES |
+| Ram : `disable` | YES | YES | NO |
 
- - `Volatile option` : the object have maximun lifetime
+ - `Volatile` : the object have maximun lifetime
  - `Specific serializer` : the object stored in cache will be serialized through a serializer provided by yourself.
  - `References` : the objects stored in Ram are cached through there references (no serialization is done).
  - `Disable` : the corresponding layer (Ram or disk) is disable.
@@ -83,7 +83,7 @@ All the configuration of the cache is done when you are building the cache throu
 cache = new Builder<>(CACHE_NAME, TEST_APP_VERSION, AbstractVehicule.class)
     .enableLog()
     .useReferenceInRam(RAM_MAX_SIZE, new SizeOfVehiculeForTesting())
-    .useSerializerInDisk(DISK_MAX_SIZE, true, new DualCacheTest.SerializerForTesting(), getContext())
+    .useSerializerInDisk(DISK_MAX_SIZE, true, new SerializerForTesting(), getContext())
     .build();
 ```
 You can note that when you build the cache, you need to provide an `app version` number. When the cache
@@ -96,8 +96,8 @@ Put
 To put an object into your cache, simply call `put` :
 
 ```Java
-cache.put("mykey", object);
-cache.put("mykey", object, time); //Just for VOLATILE_ENTRY caches
+cache.put("mykey", object); //Can be used in both cache types
+cache.put("mykey", object, time); //Just for VOLATILE caches
 ```
 
 Get
