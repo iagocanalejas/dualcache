@@ -83,7 +83,7 @@ All the configuration of the cache is done when you are building the cache throu
 cache = new Builder<>(CACHE_NAME, TEST_APP_VERSION, AbstractVehicule.class)
     .enableLog()
     .useReferenceInRam(RAM_MAX_SIZE, new SizeOfVehiculeForTesting())
-    .useSerializerInDisk(DISK_MAX_SIZE, true, new DualCacheTest.SerializerForTesting(), getContext())
+    .useSerializerInDisk(DISK_MAX_SIZE, true, new SerializerForTesting(), getContext())
     .build();
 ```
 You can note that when you build the cache, you need to provide an `app version` number. When the cache
@@ -96,8 +96,8 @@ Put
 To put an object into your cache, simply call `put` :
 
 ```Java
-cache.put("mykey", object);
-cache.put("mykey", object, time); //Just for VOLATILE_ENTRY caches
+cache.put("mykey", object); //Can be used in both cache types
+cache.put("mykey", object, time); //Just for VOLATILE caches
 ```
 
 Get
