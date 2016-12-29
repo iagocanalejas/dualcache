@@ -23,6 +23,6 @@ public class VolatileSizeOf<T> implements SizeOf<VolatileCacheEntry<T>> {
      */
     @Override
     public int sizeOf(VolatileCacheEntry<T> object) {
-        return mSizeOf.sizeOf(object.getItem()) + 8; // We suppose long = 8 bytes
+        return mSizeOf.sizeOf(object.getItem()) + (Double.SIZE / Byte.SIZE);
     }
 }
