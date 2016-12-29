@@ -7,10 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.iagocanalejas.dualcache.R;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.coru.iagocanalejas.dualcache.R;
 
 /**
  * This activity ask user input to configure the demo.

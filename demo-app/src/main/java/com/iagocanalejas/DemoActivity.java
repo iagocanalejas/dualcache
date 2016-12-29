@@ -8,13 +8,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iagocanalejas.dualcache.R;
-import com.iagocanalejas.interfaces.CacheSerializer;
+import com.iagocanalejas.cache.Builder;
+import com.iagocanalejas.cache.DualCache;
+import com.iagocanalejas.cache.interfaces.CacheSerializer;
 
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.coru.iagocanalejas.dualcache.R;
 
 /**
  * This Activity provide a very simple demo usage of the dualcache.
