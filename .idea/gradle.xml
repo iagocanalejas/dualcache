@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/demo-app" />
             <option value="$PROJECT_DIR$/gsonserializer" />
+            <option value="$PROJECT_DIR$/jacksonserializer" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
