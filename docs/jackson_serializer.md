@@ -5,7 +5,7 @@
 
 ```ruby
 dependencies {
-  com.fasterxml.jackson.core:jackson-databind:<VERSION>
+  compile "com.fasterxml.jackson.core:jackson-databind:<VERSION>"
 }
 ```
 
