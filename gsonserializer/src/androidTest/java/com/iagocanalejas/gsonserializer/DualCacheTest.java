@@ -54,7 +54,7 @@ public abstract class DualCacheTest {
 
     @Test
     public void testBasicOperations() throws Exception {
-        CoolCar car = new CoolCar();
+        CoolCar car = new CoolCar(CoolCar.class.getSimpleName());
         String keyCar = "car";
         cache.put(keyCar, car);
         if (cache.getRAMMode().equals(DualCacheRamMode.DISABLE) &&
@@ -89,7 +89,7 @@ public abstract class DualCacheTest {
         assertNull(cache.get(keyCar));
         assertEquals(false, cache.contains(keyCar));
 
-        CoolBike bike = new CoolBike();
+        CoolBike bike = new CoolBike(CoolBike.class.getSimpleName());
         cache.put(keyCar, car);
         String keyBike = "bike";
         cache.put(keyBike, bike);
@@ -109,7 +109,7 @@ public abstract class DualCacheTest {
 
     @Test
     public void testBasicOperations2() throws Exception {
-        CoolCar car = new CoolCar();
+        CoolCar car = new CoolCar(CoolCar.class.getSimpleName());
         String keyCar = "car";
         cache.put(keyCar, car);
         cache.invalidateRAM();
@@ -140,7 +140,7 @@ public abstract class DualCacheTest {
         assertNull(cache.get(keyCar));
         assertEquals(false, cache.contains(keyCar));
 
-        CoolBike bike = new CoolBike();
+        CoolBike bike = new CoolBike(CoolBike.class.getSimpleName());
         String keyBike = "bike";
         cache.put(keyCar, car);
         cache.put(keyBike, bike);
@@ -155,13 +155,13 @@ public abstract class DualCacheTest {
     @Test
     public void testLRUPolicy() {
         cache.invalidate();
-        CoolCar carToEvict = new CoolCar();
+        CoolCar carToEvict = new CoolCar(CoolCar.class.getSimpleName());
         String keyCar = "car";
         cache.put(keyCar, carToEvict);
         long size = cache.getRamUsedInBytes();
         int numberOfItemsToAddForRAMEviction = (int) (RAM_MAX_SIZE / size);
         for (int i = 0; i < numberOfItemsToAddForRAMEviction; i++) {
-            cache.put(keyCar + i, new CoolCar());
+            cache.put(keyCar + i, new CoolCar(CoolCar.class.getSimpleName()));
         }
         cache.invalidateDisk();
         assertNull(cache.get(keyCar));
@@ -169,7 +169,7 @@ public abstract class DualCacheTest {
 
         cache.put(keyCar, carToEvict);
         for (int i = 0; i < numberOfItemsToAddForRAMEviction; i++) {
-            cache.put(keyCar + i, new CoolCar());
+            cache.put(keyCar + i, new CoolCar(CoolCar.class.getSimpleName()));
         }
         if (!cache.getDiskMode().equals(DualCacheDiskMode.DISABLE)) {
             assertEquals(carToEvict, cache.get(keyCar));
@@ -216,7 +216,7 @@ public abstract class DualCacheTest {
                         Thread.sleep((long) (Math.random() * 2));
                         double choice = Math.random();
                         if (choice < 0.4) {
-                            cache.put(key, new CoolCar());
+                            cache.put(key, new CoolCar(CoolCar.class.getSimpleName()));
                         } else if (choice < 0.5) {
                             cache.delete(key);
                         } else if (choice < 0.8) {
@@ -234,25 +234,6 @@ public abstract class DualCacheTest {
                 }
             }
         };
-    }
-
-    public static class SerializerForTesting implements CacheSerializer<AbstractVehicule> {
-
-        @Override
-        public AbstractVehicule fromString(String data) {
-            if (new String(data).equals(CoolBike.class.getSimpleName())) {
-                return new CoolBike();
-            } else if (new String(data).equals(CoolCar.class.getSimpleName())) {
-                return new CoolCar();
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public String toString(AbstractVehicule object) {
-            return object.getClass().getSimpleName();
-        }
     }
 
     public static class SizeOfVehiculeForTesting implements SizeOf<AbstractVehicule> {

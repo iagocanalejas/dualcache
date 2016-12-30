@@ -170,6 +170,16 @@ public class DualCache<T> {
         return mDiskMode;
     }
 
+
+    /**
+     * Return the way cache persistence is working
+     *
+     * @return the way cache persistence is working
+     */
+    public DualCacheVolatileMode getPersistenceMode() {
+        return mVolatileMode;
+    }
+
     //region PUT
 
     /**
