@@ -1,1 +1,1 @@
-include ':demo-app', ':core', ':gsonserializer', ':jacksonserializer'
+include ':demo-app', ':core', ':gsonserializer', ':jacksonserializer', ':logansquareserializer'
