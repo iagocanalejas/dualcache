@@ -13,6 +13,18 @@ android:
 before_install:
   - chmod +x gradlew
 
+branches:
+  only:
+    - master
+    - develop
+
 script:
   - ./gradlew clean
-  - ./gradlew cache:check -Ptravis
+  - ./gradlew core:check -Ptravis
+
+notifications:
+  email:
+    recipients:
+      - iagocanalejas@gmail.com
+    on_success: change
+    on_failure: change
