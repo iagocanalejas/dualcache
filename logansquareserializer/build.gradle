@@ -28,6 +28,6 @@ android {
 }
 
 dependencies {
-    apt "com.bluelinelabs:logansquare-compiler:$project.loganSquareVersion"
     compile "com.bluelinelabs:logansquare:$project.loganSquareVersion"
+    compile project(path: ':core')
 }

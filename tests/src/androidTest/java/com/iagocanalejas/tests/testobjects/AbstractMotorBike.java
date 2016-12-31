@@ -1,9 +1,15 @@
 package com.iagocanalejas.tests.testobjects;
 
+import com.bluelinelabs.logansquare.annotation.JsonObject;
 
+@JsonObject
 public abstract class AbstractMotorBike extends AbstractVehicule {
 
     public AbstractMotorBike() {
-        mWheels = 2;
     }
+
+    public AbstractMotorBike(int wheels) {
+        mWheels = wheels;
+    }
+
 }

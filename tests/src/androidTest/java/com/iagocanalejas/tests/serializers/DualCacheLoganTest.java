@@ -6,8 +6,9 @@ import com.iagocanalejas.tests.testobjects.AbstractVehicule;
 
 /**
  * Created by Canalejas on 31/12/2016.
+ * Requires classes to be annotated with {@link com.bluelinelabs.logansquare.annotation.JsonObject}
+ * and {@link com.bluelinelabs.logansquare.annotation.JsonField}
  */
-
 public abstract class DualCacheLoganTest extends DualCacheTest {
 
     @Override

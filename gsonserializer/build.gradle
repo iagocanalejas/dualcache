@@ -28,4 +28,5 @@ android {
 
 dependencies {
     compile "com.google.code.gson:gson:$project.gsonVersion"
+    compile project(path: ':core')
 }

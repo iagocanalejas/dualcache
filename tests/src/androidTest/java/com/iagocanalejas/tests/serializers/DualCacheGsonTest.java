@@ -7,8 +7,8 @@ import com.iagocanalejas.tests.testobjects.AbstractVehicule;
 
 /**
  * Created by Canalejas on 31/12/2016.
+ * Gson objects need a default empty constructor to work
  */
-
 public abstract class DualCacheGsonTest extends DualCacheTest {
 
     @Override
