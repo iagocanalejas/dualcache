@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/cache/cache.iml" filepath="$PROJECT_DIR$/cache/cache.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demo-app/demo-app.iml" filepath="$PROJECT_DIR$/demo-app/demo-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
       <module fileurl="file://$PROJECT_DIR$/dualcache.iml" filepath="$PROJECT_DIR$/dualcache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gsonserializer/gsonserializer.iml" filepath="$PROJECT_DIR$/gsonserializer/gsonserializer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jacksonserializer/jacksonserializer.iml" filepath="$PROJECT_DIR$/jacksonserializer/jacksonserializer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tests/tests.iml" filepath="$PROJECT_DIR$/tests/tests.iml" />
     </modules>
   </component>
 </project>

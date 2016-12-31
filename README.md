@@ -75,15 +75,16 @@ dependencies {
 All the configuration of the cache is done when you are building the cache through its `Builder` class.
 
 # Basic Cache Example
+---------------------
 
  First of all, you need to build you cache, through the `Builder` class.
  Basic cache with references in RAM and a default serializer on disk :
 
 ```Java
-cache = new Builder<>(CACHE_NAME, TEST_APP_VERSION, AbstractVehicule.class)
+cache = new Builder<>(CACHE_NAME, TEST_APP_VERSION, YourClass.class)
     .enableLog()
-    .useReferenceInRam(RAM_MAX_SIZE, new SizeOfVehiculeForTesting())
-    .useSerializerInDisk(DISK_MAX_SIZE, true, new SerializerForTesting(), getContext())
+    .useReferenceInRam(RAM_MAX_SIZE, new SizeOfYourClass())
+    .useSerializerInDisk(DISK_MAX_SIZE, true, new SerializerForYourClass(), getContext())
     .build();
 ```
 You can note that when you build the cache, you need to provide an `app version` number. When the cache
@@ -91,29 +92,89 @@ is loaded, if data exist with a inferior number, it will be invalidate. It can b
 you update your app, and change your model, to avoid crashes. This feature is possible because the DiskLruCache of Jake Wharton
 implemented this feature.
 
-Put
----
-To put an object into your cache, simply call `put` :
+# Cache configuration
+---------------------
 
-```Java
-cache.put("mykey", object); //Can be used in both cache types
-cache.put("mykey", object, time); //Just for VOLATILE caches
-```
+  - Serializer in RAM:
+     ```Java
+     builder = builder.useSerializerInRam(MAX_SIZE, new YourClassSerializer());
+     ```
 
-Get
----
-To get an object from your cache, simply call `get` :
+  - Reference in RAM:
+     ```Java
+     builder = builder.useReferenceInRam(MAX_SIZE, new SizeOfYourClass());
+     ```
 
-```Java
-DummyClass object = null;
-object = cache.get("mykey");
-```
+  - No RAM:
+     ```Java
+     builder = builder.noRam();
+     ```
 
-# Use cases
+  - Serializer in Disk:
+     ```Java
+      builder = builder.useSerializerInDisk(MAX_SIZE, usePrivateFiles, new YourClassSerializer(), context);
+      builder = builder.useSerializerInDisk(MAX_SIZE, cacheFile, new YourClassSerializer());
+      ```
 
- * [Basic Cache without persistence time](docs/basic_cache.md)
- * [Cache with global persistence time](docs/volatil_cache.md)
- * [Cache with diferent persistence time for each entry](docs/volatil_cache_entry.md)
+  - No Disk:
+     ```Java
+     builder = builder.noDisk();
+     ```
+
+  - Volatile Entries:
+    ```Java
+    builder = builder.useVolatileCache(PERSISTENCE_TIME);
+    ```
+
+# Available operations
+----------------------
+
+ - Put
+    To put an object into your cache, simply call `put` :
+
+    ```Java
+    cache.put("mykey", object); //Can be used in both cache types
+    cache.put("mykey", object, time); //Just for VOLATILE caches
+    ```
+
+ - Get
+    To get an object from your cache, simply call `get` :
+
+    ```Java
+    object = cache.get("mykey");
+    ```
+
+ - Contains
+    You can check if cache has an entry with `contains` :
+
+    ```Java
+    boolean = cache.contains("mykey")
+    ```
+
+ - Delete
+    To delete an object in cache call `delete` :
+
+    ```Java
+    cache.delete("mykey");
+    ```
+
+ - Invalidate
+    To remove all cache data you can call on of the `ìnvalidate` methods :
+
+    ```Java
+    cache.invalidate();
+    cache.invalidateRAM();
+    cache.invalidateDisk();
+    ```
+
+ - Configuration
+    You can check how is your cache configured with `mode` methods :
+
+    ```Java
+    cache.getRAMMode();
+    cache.getDiskMode();
+    cache.getPersistenceMode();
+    ```
  
 # CacheSerializer
  * [With GSON](docs/gson_cache_serializer.md)
@@ -123,7 +184,7 @@ object = cache.get("mykey");
 # Pull Requests
 I welcome and encourage all pull requests. Here are some basic rules to follow to ensure timely addition of your request:
   1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (on Mac) or Ctrl+Alt+L on Windows to reformat code with Android Studio defaults.
-  2. Pull Request must pass all tests `gradlew connectedAndroidTest` and `gradlew library:check`
+  2. Pull Request must pass all tests `gradlew connectedAndroidTest` and `gradlew check`
   2. If its a feature, bugfix, or anything please only change code to what you specify.
   3. Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge.
   4. Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.
