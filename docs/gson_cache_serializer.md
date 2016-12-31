@@ -3,35 +3,18 @@
 
 # Serializer example using [Gson](https://github.com/google/gson)
 
-```ruby
-dependencies {
-  com.google.code.gson:gson:<VERSION>
-}
-```
+  - Add my implementation:
 
-```java
-public class GsonSerializer<T> implements CacheSerializer<T> {
-
-    private static Gson sGson;
-    private final Class<T> mClazz;
-
-    static {
-        sGson = new Gson();
+    dependencies {
+      compile 'com.github.iagocanalejas:dualcache:gsonserializer:<VERSION>'
     }
 
-    public GsonSerializer(Class<T> clazz){
-        this.mClazz = clazz;
-    }
+    Version: [![](https://jitpack.io/v/iagocanalejas/dualcache.svg)](https://jitpack.io/#iagocanalejas/dualcache)
 
-    @Override
-    public T fromString(String data) {
-        return sGson.fromJson(data, mClazz);
-    }
+ - Implement it yourself
 
-    @Override
-    public String toString(T object) {
-        return sGson.toJson(object, mClazz);
+    ```ruby
+    dependencies {
+      com.google.code.gson:gson:<VERSION>
     }
-
-}
-```
+    ```

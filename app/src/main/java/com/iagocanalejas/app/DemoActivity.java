@@ -160,8 +160,8 @@ public class DemoActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 }
 

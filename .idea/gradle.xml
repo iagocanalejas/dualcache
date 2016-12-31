@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/gsonserializer" />
             <option value="$PROJECT_DIR$/jacksonserializer" />
-            <option value="$PROJECT_DIR$/logansquareserializer" />
             <option value="$PROJECT_DIR$/tests" />
           </set>
         </option>

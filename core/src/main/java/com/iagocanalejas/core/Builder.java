@@ -191,6 +191,17 @@ public class Builder<T> {
     }
 
     /**
+     * Use this if you do not want use the disk cache layer, meaning that only the ram cache layer
+     * will be used.
+     *
+     * @return the builder.
+     */
+    public Builder<T> noDisk() {
+        this.mDiskMode = DualCacheDiskMode.DISABLE;
+        return this;
+    }
+
+    /**
      * Set a persistence time for all cache entries
      *
      * @param seconds time a cache entry can persist in seconds
@@ -199,17 +210,6 @@ public class Builder<T> {
     public Builder<T> useVolatileCache(long seconds) {
         this.mDefaultPersistenceTime = seconds * 1000;
         this.volatileMode = DualCacheVolatileMode.VOLATILE;
-        return this;
-    }
-
-    /**
-     * Use this if you do not want use the disk cache layer, meaning that only the ram cache layer
-     * will be used.
-     *
-     * @return the builder.
-     */
-    public Builder<T> noDisk() {
-        this.mDiskMode = DualCacheDiskMode.DISABLE;
         return this;
     }
 

@@ -3,43 +3,18 @@
 
 # Serializer example using [Jackson](https://github.com/FasterXML/jackson-databind)
 
-```ruby
-dependencies {
-  com.fasterxml.jackson.core:jackson-databind:<VERSION>
-}
-```
+ - Add my implementation:
 
-```java
-public class JacksonSerializer<T> implements CacheSerializer<T> {
-    private final ObjectMapper mapper;
-    private final Class<T> clazz;
-
-    public JacksonSerializer(Class<T> clazz) {
-        this.clazz = clazz;
-        mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    dependencies {
+      compile 'com.github.iagocanalejas:dualcache:jacksonserializer:<VERSION>'
     }
 
-    @Override
-    public T fromString(String data) {
-        try {
-            return mapper.readValue(data, clazz);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        throw new IllegalStateException();
-    }
+    Version: [![](https://jitpack.io/v/iagocanalejas/dualcache.svg)](https://jitpack.io/#iagocanalejas/dualcache)
 
-    @Override
-    public String toString(T object) {
-        try {
-            return mapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        throw new IllegalStateException();
+ - Implement it yourself
+
+    ```ruby
+    dependencies {
+      compile "com.fasterxml.jackson.core:jackson-databind:<VERSION>"
     }
-}
-```
+    ```

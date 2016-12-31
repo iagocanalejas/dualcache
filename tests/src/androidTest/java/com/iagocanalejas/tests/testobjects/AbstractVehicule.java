@@ -1,15 +1,9 @@
 package com.iagocanalejas.tests.testobjects;
 
-import com.bluelinelabs.logansquare.annotation.JsonField;
-import com.bluelinelabs.logansquare.annotation.JsonObject;
-
-@JsonObject
 public abstract class AbstractVehicule {
 
-    @JsonField
     protected String mName;
 
-    @JsonField
     protected int mWheels;
 
     public String getName() {
@@ -27,7 +21,6 @@ public abstract class AbstractVehicule {
     public void setWheels(int wheels) {
         mWheels = wheels;
     }
-
 
     @Override
     public boolean equals(Object o) {

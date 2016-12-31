@@ -1,5 +1,7 @@
 package com.iagocanalejas.jacksonserializer;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +31,7 @@ public class JacksonSerializer<T> implements CacheSerializer<T> {
         try {
             return mapper.readValue(data, clazz);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), e.getMessage());
         }
         throw new IllegalStateException();
     }
@@ -39,7 +41,7 @@ public class JacksonSerializer<T> implements CacheSerializer<T> {
         try {
             return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), e.getMessage());
         }
         throw new IllegalStateException();
     }
