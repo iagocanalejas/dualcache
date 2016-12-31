@@ -29,7 +29,4 @@ android {
 
 dependencies {
     compile "com.jakewharton:disklrucache:${project.diskLruVersion}"
-
-    androidTestCompile "com.android.support.test:runner:${project.androidSupportTestRunner}"
-    androidTestCompile "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
 }

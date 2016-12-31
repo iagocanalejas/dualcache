@@ -27,8 +27,5 @@ android {
 }
 
 dependencies {
-    androidTestCompile "com.android.support.test:runner:${project.androidSupportTestRunner}"
-
     compile "com.fasterxml.jackson.core:jackson-databind:$project.jacksonVersion"
-    compile project(':core')
 }
