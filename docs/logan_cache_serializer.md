@@ -31,3 +31,5 @@ public class LoganSquareSerializer<T> implements CacheSerializer<T> {
 
 }
 ```
+
+** TODO: Implement LoganSquareSerializer in library
