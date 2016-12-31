@@ -1,4 +1,5 @@
 [![Travis Build](https://travis-ci.org/bluelinelabs/LoganSquare.svg)](https://travis-ci.org/bluelinelabs/LoganSquare)
+[![Check the repo](https://img.shields.io/github/tag/bluelinelabs/LoganSquare.svg)][logansquare]
 
 # Serializer example using [LoganSquare](https://github.com/bluelinelabs/LoganSquare)
 
