@@ -15,21 +15,21 @@ import java.io.IOException;
  */
 
 public class JacksonSerializer<T> implements Parser<T> {
-    private final ObjectMapper mapper;
-    private final Class<T> clazz;
+    private final ObjectMapper mMapper;
+    private final Class<T> mClass;
 
     public JacksonSerializer(Class<T> clazz) {
-        this.clazz = clazz;
-        mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        this.mClass = clazz;
+        mMapper = new ObjectMapper();
+        mMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
+        mMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
     }
 
     @Override
     public T fromString(String data) {
         try {
-            return mapper.readValue(data, clazz);
+            return mMapper.readValue(data, mClass);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), e.getMessage());
         }
@@ -39,7 +39,7 @@ public class JacksonSerializer<T> implements Parser<T> {
     @Override
     public String toString(T object) {
         try {
-            return mapper.writeValueAsString(object);
+            return mMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             Log.e(getClass().getSimpleName(), e.getMessage());
         }

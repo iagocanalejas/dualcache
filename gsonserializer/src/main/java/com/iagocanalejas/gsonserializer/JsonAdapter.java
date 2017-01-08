@@ -1,5 +1,6 @@
 package com.iagocanalejas.gsonserializer;
 
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -23,7 +24,10 @@ public class JsonAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
     }
 
     @Override
-    public final JsonElement serialize(final T object, final Type interfaceType, final JsonSerializationContext context) {
+    public final JsonElement serialize(
+            final T object,
+            final Type interfaceType,
+            final JsonSerializationContext context) {
         final JsonObject member = new JsonObject();
 
         member.addProperty("type", object.getClass().getName());
@@ -34,7 +38,11 @@ public class JsonAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
     }
 
     @Override
-    public final T deserialize(final JsonElement elem, final Type interfaceType, final JsonDeserializationContext context) throws JsonParseException {
+    public final T deserialize(
+            final JsonElement elem,
+            final Type interfaceType,
+            final JsonDeserializationContext context) {
+
         final JsonObject member = (JsonObject) elem;
         final JsonElement typeString = get(member, "type");
         final JsonElement data = get(member, "data");
