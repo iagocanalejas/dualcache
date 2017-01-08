@@ -1,1 +1,1 @@
-include ':app', ':core', ':gsonserializer', ':jacksonserializer', ':tests'
+include ':app', ':dualcache', ':gsonserializer', ':jacksonserializer', ':tests'

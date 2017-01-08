@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iagocanalejas.core.interfaces.CacheSerializer;
+import com.iagocanalejas.dualcache.interfaces.Parser;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
  * Created by Canalejas on 30/12/2016.
  */
 
-public class JacksonSerializer<T> implements CacheSerializer<T> {
+public class JacksonSerializer<T> implements Parser<T> {
     private final ObjectMapper mapper;
     private final Class<T> clazz;
 

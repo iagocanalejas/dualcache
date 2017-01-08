@@ -5,11 +5,11 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.iagocanalejas.core.DualCache;
-import com.iagocanalejas.core.interfaces.CacheSerializer;
-import com.iagocanalejas.core.interfaces.SizeOf;
-import com.iagocanalejas.core.modes.DualCacheDiskMode;
-import com.iagocanalejas.core.modes.DualCacheRamMode;
+import com.iagocanalejas.dualcache.DualCache;
+import com.iagocanalejas.dualcache.interfaces.Parser;
+import com.iagocanalejas.dualcache.interfaces.SizeOf;
+import com.iagocanalejas.dualcache.modes.DualCacheDiskMode;
+import com.iagocanalejas.dualcache.modes.DualCacheRamMode;
 import com.iagocanalejas.tests.testobjects.AbstractVehicule;
 import com.iagocanalejas.tests.testobjects.CoolBike;
 import com.iagocanalejas.tests.testobjects.CoolCar;
@@ -34,7 +34,7 @@ public abstract class DualCacheTest {
     protected static final String CACHE_NAME = "test";
     protected static final int TEST_APP_VERSION = 0;
     protected DualCache<AbstractVehicule> cache;
-    protected CacheSerializer<AbstractVehicule> defaultCacheSerializer;
+    protected Parser<AbstractVehicule> mDefaultParser;
     private Context context;
 
     protected Context getContext() {
@@ -48,7 +48,7 @@ public abstract class DualCacheTest {
 
     @After
     public void tearDown() throws Exception {
-        cache.invalidate();
+        cache.clear();
     }
 
     @Test
@@ -84,7 +84,7 @@ public abstract class DualCacheTest {
             assertEquals(true, cache.contains(keyCar));
         }
 
-        cache.invalidate();
+        cache.clear();
         assertNull(cache.get(keyCar));
         assertEquals(false, cache.contains(keyCar));
 
@@ -135,7 +135,7 @@ public abstract class DualCacheTest {
             assertEquals(true, cache.contains(keyCar));
         }
 
-        cache.invalidate();
+        cache.clear();
         assertNull(cache.get(keyCar));
         assertEquals(false, cache.contains(keyCar));
 
@@ -143,8 +143,8 @@ public abstract class DualCacheTest {
         String keyBike = "bike";
         cache.put(keyCar, car);
         cache.put(keyBike, bike);
-        cache.delete(keyCar);
-        cache.delete(keyBike);
+        cache.remove(keyCar);
+        cache.remove(keyBike);
         assertNull(cache.get(keyCar));
         assertEquals(false, cache.contains(keyCar));
         assertNull(cache.get(keyBike));
@@ -153,7 +153,7 @@ public abstract class DualCacheTest {
 
     @Test
     public void testLRUPolicy() {
-        cache.invalidate();
+        cache.clear();
         CoolCar carToEvict = new CoolCar(CoolCar.class.getSimpleName());
         String keyCar = "car";
         cache.put(keyCar, carToEvict);
@@ -217,13 +217,13 @@ public abstract class DualCacheTest {
                         if (choice < 0.4) {
                             cache.put(key, new CoolCar(CoolCar.class.getSimpleName()));
                         } else if (choice < 0.5) {
-                            cache.delete(key);
+                            cache.remove(key);
                         } else if (choice < 0.8) {
                             cache.get(key);
                         } else if (choice < 0.9) {
                             cache.contains(key);
                         } else if (choice < 1) {
-                            cache.invalidate();
+                            cache.clear();
                         } else {
                             // do nothing
                         }
@@ -235,7 +235,7 @@ public abstract class DualCacheTest {
         };
     }
 
-    public static class SerializerForTesting implements CacheSerializer<AbstractVehicule> {
+    public static class SerializerForTesting implements Parser<AbstractVehicule> {
 
         @Override
         public AbstractVehicule fromString(String data) {

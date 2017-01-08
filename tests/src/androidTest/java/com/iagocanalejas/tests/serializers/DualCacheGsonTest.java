@@ -14,6 +14,6 @@ public abstract class DualCacheGsonTest extends DualCacheTest {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        defaultCacheSerializer = new GsonSerializer<>(AbstractVehicule.class);
+        mDefaultParser = new GsonSerializer<>(AbstractVehicule.class);
     }
 }

@@ -2,37 +2,59 @@ apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 
-// Add checkstyle, findbugs, pmd and lint to the check task.
-check.dependsOn  'checkstyle', 'findbugs', 'pmd', 'lint'
+check.dependsOn 'lint', 'findbugs', 'checkstyle', 'pmd'
 
 task checkstyle(type: Checkstyle) {
-    configFile file("${project.rootDir}/quality/checkstyle/checkstyle.xml")
-    configProperties.checkstyleSuppressionsPath = file("${project.rootDir}/quality/checkstyle/suppressions.xml").absolutePath
+    configFile file("${project.rootDir}/quality/checkstyle.xml")
+
     source 'src/main/java'
     include '**/*.java'
     exclude '**/gen/**'
 
     classpath = files()
+
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        html.destination "$project.buildDir/reports/checkstyle/checkstyle.html"
+    }
 }
 
+task pmd(type: Pmd) {
+    ruleSetFiles = files("${project.rootDir}/quality/pmd-ruleset.xml")
+    ruleSets = []
 
-task findbugs(type: FindBugs, dependsOn: "assembleDebug") {
     ignoreFailures = false
-    effort = "max"
-    reportLevel = "high"
-    excludeFilter = new File("${project.rootDir}/quality/findbugs/findbugs-filter.xml")
-    classes = files("${project.rootDir}/core/build/intermediates/classes")
 
     source 'src/main/java'
     include '**/*.java'
     exclude '**/gen/**'
 
     reports {
-        xml.enabled = false
         html.enabled = true
-        xml {
-            destination "$project.buildDir/reports/findbugs/findbugs.xml"
+        xml.enabled = false
+        html {
+            destination "$project.buildDir/reports/pmd/pmd.html"
         }
+    }
+}
+
+task findbugs(type: FindBugs, dependsOn: "assembleDebug") {
+    ignoreFailures = false
+
+    effort = "max"
+    reportLevel = "high"
+
+    excludeFilter = new File("${project.rootDir}/quality/findbugs-filter.xml")
+    classes = files("${project.buildDir}/intermediates/classes")
+
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        html.enabled = true
+        xml.enabled = false
         html {
             destination "$project.buildDir/reports/findbugs/findbugs.html"
         }
@@ -41,37 +63,13 @@ task findbugs(type: FindBugs, dependsOn: "assembleDebug") {
     classpath = files()
 }
 
-task pmd(type: Pmd) {
-    ruleSetFiles = files("${project.rootDir}/quality/pmd/pmd-ruleset.xml")
-    ignoreFailures = false
-    ruleSets = []
-
-    source 'src/main/java'
-    include '**/*.java'
-    exclude '**/gen/**'
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-        xml {
-            destination "$project.buildDir/reports/pmd/pmd.xml"
-        }
-        html {
-            destination "$project.buildDir/reports/pmd/pmd.html"
-        }
-    }
-}
-
-
 android {
     lintOptions {
+        lintConfig file("${project.rootDir}/quality/lint.xml")
         abortOnError true
+        disable 'InvalidPackage'
 
-        lintConfig file("${project.rootDir}/quality/lint/lint.xml")
-
-        // if true, generate an HTML report (with issue explanations, sourcecode, etc)
         htmlReport true
-        // optional path to report (default will be lint-results.html in the builddir)
         htmlOutput file("$project.buildDir/reports/lint/lint.html")
     }
 }

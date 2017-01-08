@@ -12,12 +12,9 @@ android {
         targetSdkVersion project.compileSdkVersion
         versionCode project.libraryCode
         versionName project.libraryName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -36,5 +33,5 @@ dependencies {
 
     compile "com.jakewharton:butterknife:${project.butterknifeVersion}"
     compile "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
-    compile project(':core')
+    compile project(':dualcache')
 }

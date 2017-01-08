@@ -13,7 +13,7 @@ public abstract class DualCacheJacksonTest extends DualCacheTest {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        defaultCacheSerializer = new JacksonSerializer<>(AbstractVehicule.class);
+        mDefaultParser = new JacksonSerializer<>(AbstractVehicule.class);
     }
 
 }

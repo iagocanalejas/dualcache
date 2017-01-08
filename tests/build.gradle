@@ -11,8 +11,6 @@ android {
         targetSdkVersion project.compileSdkVersion
         versionCode project.libraryCode
         versionName project.libraryName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
 
     packagingOptions {
@@ -27,7 +25,7 @@ android {
 
 dependencies {
     androidTestCompile "com.android.support.test:runner:${project.androidSupportTestRunner}"
-    androidTestCompile project(':core')
+    androidTestCompile project(':dualcache')
     androidTestCompile project(':gsonserializer')
     androidTestCompile project(':jacksonserializer')
 }

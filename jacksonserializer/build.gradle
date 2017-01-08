@@ -13,8 +13,6 @@ android {
         targetSdkVersion project.compileSdkVersion
         versionCode project.libraryCode
         versionName project.libraryName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
 
     packagingOptions {
@@ -28,5 +26,5 @@ android {
 
 dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:$project.jacksonVersion"
-    compile project(path: ':core')
+    compile project(path: ':dualcache')
 }

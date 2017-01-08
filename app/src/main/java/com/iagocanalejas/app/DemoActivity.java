@@ -8,9 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iagocanalejas.core.Builder;
-import com.iagocanalejas.core.DualCache;
-import com.iagocanalejas.core.interfaces.CacheSerializer;
+import com.iagocanalejas.dualcache.DualCache;
+import com.iagocanalejas.dualcache.interfaces.Parser;
 
 import java.util.UUID;
 
@@ -79,9 +78,9 @@ public class DemoActivity extends Activity {
         mDiskCacheSize = getIntent().getIntExtra(EXTRA_DISK_CACHE_SIZE, 100);
         mRamCacheSize = getIntent().getIntExtra(EXTRA_RAM_CACHE_SIZE, 50);
 
-        CacheSerializer<String> jsonSerializer = new JsonSerializer<>(String.class);
+        Parser<String> jsonSerializer = new JsonSerializer<>(String.class);
 
-        mCache = new Builder<String>(mCacheId, 1)
+        mCache = new DualCache.Builder<String>(mCacheId, 1)
                 .enableLog()
                 .useSerializerInRam(mRamCacheSize, jsonSerializer)
                 .useSerializerInDisk(mDiskCacheSize, true, jsonSerializer, getApplicationContext())
@@ -148,14 +147,16 @@ public class DemoActivity extends Activity {
         mButtonInvalidateCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCache.invalidate();
+                mCache.clear();
             }
         });
     }
 
     private void refreshCacheSize() {
-        mTextViewDataRam.setText("Ram : " + mCache.getRamUsedInBytes() + "/" + mRamCacheSize + " B");
-        mTextViewDataDisk.setText("Disk : " + mCache.getDiskUsedInBytes() + "/" + mDiskCacheSize + " B");
+        mTextViewDataRam.setText("Ram : " + mCache.getRamUsedInBytes()
+                + "/" + mRamCacheSize + " B");
+        mTextViewDataDisk.setText("Disk : " + mCache.getDiskUsedInBytes()
+                + "/" + mDiskCacheSize + " B");
     }
 
     @Override

@@ -2,13 +2,13 @@ package com.iagocanalejas.gsonserializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.iagocanalejas.core.interfaces.CacheSerializer;
+import com.iagocanalejas.dualcache.interfaces.Parser;
 
 /**
  * Created by Canalejas on 29/12/2016.
  */
 
-public class GsonSerializer<T> implements CacheSerializer<T> {
+public class GsonSerializer<T> implements Parser<T> {
 
     private final Gson mGson;
     private final Class<T> mClazz;
