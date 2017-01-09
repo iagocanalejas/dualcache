@@ -31,7 +31,6 @@ import com.iagocanalejas.dualcache.modes.DualCacheVolatileMode;
 import com.iagocanalejas.dualcache.wrappers.VolatileEntry;
 import com.iagocanalejas.dualcache.wrappers.VolatileParser;
 import com.iagocanalejas.dualcache.wrappers.VolatileSizeOf;
-import com.jakewharton.disklrucache.DiskLruCache;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,15 +45,12 @@ import java.util.Calendar;
 public class DualCache<V> implements VolatileCache<String, V> {
     private static final String TAG = DualCache.class.getSimpleName();
 
-    private static final int VALUES_PER_CACHE_ENTRY = 1;
-
     // Basic conf
     private final int mAppVersion;
     private final Logger mLogger;
 
     // Disk conf
     private final int mMaxDiskSizeBytes;
-    private final File mDiskCacheFolder;
     private final DualCacheDiskMode mDiskMode;
     private DiskCache mDiskLruCache;
 
@@ -83,7 +79,6 @@ public class DualCache<V> implements VolatileCache<String, V> {
         this.mRamSerializer = ramSerializer;
         this.mDiskMode = diskMode;
         this.mDiskSerializer = diskSerializer;
-        this.mDiskCacheFolder = diskFolder;
         this.mLogger = logger;
         this.mDefaultPersistenceTime = defaultPersistenceTIme;
         this.mVolatileMode = volatileMode;
@@ -107,11 +102,9 @@ public class DualCache<V> implements VolatileCache<String, V> {
             case ENABLE_WITH_SPECIFIC_SERIALIZER:
                 this.mMaxDiskSizeBytes = maxDiskSizeBytes;
                 try {
-                    this.mDiskLruCache = new DiskCache(
-                            DiskLruCache.open(diskFolder, this.mAppVersion, VALUES_PER_CACHE_ENTRY,
-                                    this.mMaxDiskSizeBytes));
+                    this.mDiskLruCache = new DiskCache(diskFolder, mAppVersion, mMaxDiskSizeBytes);
                 } catch (IOException e) {
-                    logger.logError(TAG, e);
+                    mLogger.logError(TAG, e);
                 }
                 break;
             default:
@@ -138,13 +131,8 @@ public class DualCache<V> implements VolatileCache<String, V> {
 
     }
 
-    private void openDiskLruCache(File diskFolder) throws IOException {
-        this.mDiskLruCache = new DiskCache(DiskLruCache.open(
-                diskFolder,
-                this.mAppVersion,
-                VALUES_PER_CACHE_ENTRY,
-                this.mMaxDiskSizeBytes
-        ));
+    public int getCacheVersion() {
+        return mAppVersion;
     }
 
     public long getRamUsedInBytes() {
@@ -209,8 +197,11 @@ public class DualCache<V> implements VolatileCache<String, V> {
 
         V previous = null;
         if (mRamMode.equals(DualCacheRamMode.ENABLE_WITH_REFERENCE)) {
-            previous = ((VolatileEntry<V>) mLruCache.put(key,
-                    new VolatileEntry<>(lifetime, object))).getItem();
+            VolatileEntry<V> prev = ((VolatileEntry<V>) mLruCache.put(key,
+                    new VolatileEntry<>(lifetime, object)));
+            if (prev != null && prev.getTimestamp().before(Calendar.getInstance().getTime())) {
+                previous = prev.getItem();
+            }
         }
 
         String ramSerialized = null;
@@ -218,20 +209,25 @@ public class DualCache<V> implements VolatileCache<String, V> {
             ramSerialized = mVolatileRamSerializer.toString(new VolatileEntry<>(lifetime, object));
             String prev = (String) mLruCache.put(key, ramSerialized);
             if (prev != null) {
-                previous = mVolatileRamSerializer.fromString(prev).getItem();
+                VolatileEntry<V> prevEntry = mVolatileRamSerializer.fromString(prev);
+                if (prevEntry.getTimestamp().before(Calendar.getInstance().getTime())) {
+                    previous = prevEntry.getItem();
+                }
             }
         }
 
         if (mDiskMode.equals(DualCacheDiskMode.ENABLE_WITH_SPECIFIC_SERIALIZER)) {
-            mDiskLruCache.put(key, ramSerialized);
-            if (mRamSerializer == mDiskSerializer) {
+            if (mVolatileRamSerializer == mVolatileDiskSerializer) {
                 // Optimization if using same serializer
                 mDiskLruCache.put(key, ramSerialized);
             } else {
                 String prev = mDiskLruCache.put(key,
                         mVolatileDiskSerializer.toString(new VolatileEntry<>(lifetime, object)));
                 if (prev != null && previous == null) {
-                    previous = mVolatileDiskSerializer.fromString(prev).getItem();
+                    VolatileEntry<V> prevEntry = mVolatileDiskSerializer.fromString(prev);
+                    if (prevEntry.getTimestamp().before(Calendar.getInstance().getTime())) {
+                        previous = prevEntry.getItem();
+                    }
                 }
             }
         }
@@ -301,9 +297,8 @@ public class DualCache<V> implements VolatileCache<String, V> {
     public V put(String key, V object) {
         if (mVolatileMode.equals(DualCacheVolatileMode.VOLATILE)) {
             return putVolatileEntry(key, object, mDefaultPersistenceTime);
-        } else {
-            return putEntry(key, object);
         }
+        return putEntry(key, object);
     }
 
     @Override
@@ -361,7 +356,8 @@ public class DualCache<V> implements VolatileCache<String, V> {
                 cacheEntry = mVolatileDiskSerializer.fromString(diskResult);
 
                 //Invalidate cache if required
-                if (!cacheEntry.getTimestamp().after(Calendar.getInstance().getTime())) {
+                if (cacheEntry.getTimestamp().before(Calendar.getInstance().getTime())
+                        && !(cacheEntry.getTimestamp().getTime() == 0)) {
                     //Invalidate cache
                     remove(key);
                     return null;
@@ -386,14 +382,16 @@ public class DualCache<V> implements VolatileCache<String, V> {
             if (mRamMode.equals(DualCacheRamMode.ENABLE_WITH_REFERENCE)) {
                 cacheEntry = (VolatileEntry<V>) ramResult;
                 //Invalidate cache if needed
-                if (!cacheEntry.getTimestamp().after(Calendar.getInstance().getTime())) {
+                if (cacheEntry.getTimestamp().before(Calendar.getInstance().getTime())
+                        && !(cacheEntry.getTimestamp().getTime() == 0)) {
                     remove(key);
                     return null;
                 }
                 return cacheEntry.getItem();
             } else if (mRamMode.equals(DualCacheRamMode.ENABLE_WITH_SPECIFIC_SERIALIZER)) {
                 cacheEntry = mVolatileRamSerializer.fromString((String) ramResult);
-                if (!cacheEntry.getTimestamp().after(Calendar.getInstance().getTime())) {
+                if (cacheEntry.getTimestamp().before(Calendar.getInstance().getTime())
+                        && !(cacheEntry.getTimestamp().getTime() == 0)) {
                     remove(key);
                     return null;
                 }
@@ -473,7 +471,6 @@ public class DualCache<V> implements VolatileCache<String, V> {
         if (mVolatileMode.equals(DualCacheVolatileMode.VOLATILE)) {
             return getVolatileEntry(key);
         }
-
         return getEntry(key);
     }
     //endregion
@@ -482,12 +479,18 @@ public class DualCache<V> implements VolatileCache<String, V> {
     private V removeVolatileEntry(String key) {
         V previous = null;
         if (mRamMode.equals(DualCacheRamMode.ENABLE_WITH_REFERENCE)) {
-            previous = ((VolatileEntry<V>) mLruCache.remove(key)).getItem();
+            VolatileEntry<V> previousEntry = ((VolatileEntry<V>) mLruCache.remove(key));
+            if (previousEntry != null) {
+                previous = previousEntry.getItem();
+            }
         }
         if (mRamMode.equals(DualCacheRamMode.ENABLE_WITH_SPECIFIC_SERIALIZER)) {
             String prev = (String) mLruCache.remove(key);
             if (prev != null) {
-                previous = mVolatileRamSerializer.fromString(prev).getItem();
+                VolatileEntry<V> prevEntry = mVolatileRamSerializer.fromString(prev);
+                if (prevEntry.getTimestamp().before(Calendar.getInstance().getTime())) {
+                    previous = prevEntry.getItem();
+                }
             }
         }
 
@@ -496,8 +499,11 @@ public class DualCache<V> implements VolatileCache<String, V> {
                 mDiskLruCache.remove(key);
             } else {
                 String prev = mDiskLruCache.remove(key);
-                if (prev != null && previous == null) {
-                    previous = mVolatileDiskSerializer.fromString(prev).getItem();
+                if (prev != null) {
+                    VolatileEntry<V> prevEntry = mVolatileDiskSerializer.fromString(prev);
+                    if (prevEntry.getTimestamp().before(Calendar.getInstance().getTime())) {
+                        previous = prevEntry.getItem();
+                    }
                 }
             }
         }

@@ -1,6 +1,6 @@
 package com.iagocanalejas.tests.testobjects;
 
-public abstract class AbstractMotorBike extends AbstractVehicule {
+public abstract class AbstractMotorBike extends AbstractVehicle {
 
     public AbstractMotorBike() {
     }

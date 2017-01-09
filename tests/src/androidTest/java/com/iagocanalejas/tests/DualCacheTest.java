@@ -10,7 +10,7 @@ import com.iagocanalejas.dualcache.interfaces.Parser;
 import com.iagocanalejas.dualcache.interfaces.SizeOf;
 import com.iagocanalejas.dualcache.modes.DualCacheDiskMode;
 import com.iagocanalejas.dualcache.modes.DualCacheRamMode;
-import com.iagocanalejas.tests.testobjects.AbstractVehicule;
+import com.iagocanalejas.tests.testobjects.AbstractVehicle;
 import com.iagocanalejas.tests.testobjects.CoolBike;
 import com.iagocanalejas.tests.testobjects.CoolCar;
 
@@ -33,8 +33,8 @@ public abstract class DualCacheTest {
     protected static final int DISK_MAX_SIZE = 20 * RAM_MAX_SIZE;
     protected static final String CACHE_NAME = "test";
     protected static final int TEST_APP_VERSION = 0;
-    protected DualCache<AbstractVehicule> cache;
-    protected Parser<AbstractVehicule> mDefaultParser;
+    protected DualCache<AbstractVehicle> cache;
+    protected Parser<AbstractVehicle> mDefaultParser;
     private Context context;
 
     protected Context getContext() {
@@ -183,7 +183,7 @@ public abstract class DualCacheTest {
     public void testConcurrentAccess() {
         List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            threads.add(createWrokerThread(cache));
+            threads.add(createWorkerThread(cache));
         }
         Log.d("dualcachedebuglogti", "start worker threads");
         for (Thread thread : threads) {
@@ -202,7 +202,7 @@ public abstract class DualCacheTest {
         assertFalse("test", false);
     }
 
-    private Thread createWrokerThread(final DualCache<AbstractVehicule> cache) {
+    private Thread createWorkerThread(final DualCache<AbstractVehicle> cache) {
         return new Thread() {
             int sMaxNumberOfRun = 1000;
 
@@ -235,10 +235,10 @@ public abstract class DualCacheTest {
         };
     }
 
-    public static class SerializerForTesting implements Parser<AbstractVehicule> {
+    public static class SerializerForTesting implements Parser<AbstractVehicle> {
 
         @Override
-        public AbstractVehicule fromString(String data) {
+        public AbstractVehicle fromString(String data) {
             if (new String(data).equals(CoolBike.class.getSimpleName())) {
                 return new CoolBike(CoolBike.class.getSimpleName());
             } else if (new String(data).equals(CoolCar.class.getSimpleName())) {
@@ -249,15 +249,15 @@ public abstract class DualCacheTest {
         }
 
         @Override
-        public String toString(AbstractVehicule object) {
+        public String toString(AbstractVehicle object) {
             return object.getClass().getSimpleName();
         }
     }
 
-    public static class SizeOfVehiculeForTesting implements SizeOf<AbstractVehicule> {
+    public static class SizeOfVehiculeForTesting implements SizeOf<AbstractVehicle> {
 
         @Override
-        public int sizeOf(AbstractVehicule object) {
+        public int sizeOf(AbstractVehicle object) {
             int size = 0;
             size += object.getName().length() * 2; // we suppose that char = 2 bytes
             size += 4; // we suppose that int = 4 bytes

@@ -20,7 +20,7 @@ branches:
 
 script:
   - ./gradlew clean
-  - ./gradlew core:check -Ptravis
+  - ./gradlew check -Ptravis
 
 notifications:
   email:

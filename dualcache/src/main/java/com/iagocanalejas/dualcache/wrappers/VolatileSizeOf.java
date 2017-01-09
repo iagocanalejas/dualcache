@@ -5,7 +5,7 @@ import com.iagocanalejas.dualcache.interfaces.SizeOf;
 
 /**
  * Created by Iago on 26/12/2016.
- * Wraps {@link SizeOf} to add the size of a double representing {@link VolatileEntry#timestamp}
+ * Wraps {@link SizeOf} to add the size of a double representing {@link VolatileEntry#mTimestamp}
  */
 public class VolatileSizeOf<T> implements SizeOf<VolatileEntry<T>> {
 
