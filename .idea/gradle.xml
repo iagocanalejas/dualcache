@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/dualcache" />
             <option value="$PROJECT_DIR$/gsonserializer" />
             <option value="$PROJECT_DIR$/jacksonserializer" />
+            <option value="$PROJECT_DIR$/retrofit" />
             <option value="$PROJECT_DIR$/tests" />
           </set>
         </option>

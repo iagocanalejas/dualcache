@@ -1,1 +1,1 @@
-include ':app', ':dualcache', ':gsonserializer', ':jacksonserializer', ':tests'
+include ':app', ':dualcache', ':gsonserializer', ':jacksonserializer', ':tests', ':retrofit'
