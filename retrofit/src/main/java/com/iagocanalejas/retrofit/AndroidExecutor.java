@@ -11,10 +11,10 @@ import java.util.concurrent.Executor;
  */
 
 class AndroidExecutor implements Executor {
-    private final Handler handler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public void execute(@NonNull Runnable runnable) {
-        handler.post(runnable);
+        mHandler.post(runnable);
     }
 }

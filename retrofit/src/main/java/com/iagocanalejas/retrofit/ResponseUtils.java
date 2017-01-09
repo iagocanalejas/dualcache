@@ -25,9 +25,12 @@ class ResponseUtils {
     static <T> byte[] responseToBytes(Retrofit retrofit, T data, Type dataType,
                                       Annotation[] annotations) {
         for (Converter.Factory factory : retrofit.converterFactories()) {
-            if (factory == null) continue;
+            if (factory == null) {
+                continue;
+            }
             Converter<T, RequestBody> converter =
-                    (Converter<T, RequestBody>) factory.requestBodyConverter(dataType, annotations, null, retrofit);
+                    (Converter<T, RequestBody>) factory.requestBodyConverter(
+                            dataType, annotations, null, retrofit);
 
             if (converter != null) {
                 Buffer buff = new Buffer();
@@ -47,9 +50,12 @@ class ResponseUtils {
     static <T> T bytesToResponse(Retrofit retrofit, Type dataType, Annotation[] annotations,
                                  byte[] data) {
         for (Converter.Factory factory : retrofit.converterFactories()) {
-            if (factory == null) continue;
+            if (factory == null) {
+                continue;
+            }
             Converter<ResponseBody, T> converter =
-                    (Converter<ResponseBody, T>) factory.responseBodyConverter(dataType, annotations, retrofit);
+                    (Converter<ResponseBody, T>) factory.responseBodyConverter(
+                            dataType, annotations, retrofit);
 
             if (converter != null) {
                 try {
@@ -64,7 +70,7 @@ class ResponseUtils {
     }
 
     static String urlToKey(HttpUrl url) {
-        return SHA1(url.toString(), Charset.defaultCharset());
+        return sha1(url.toString(), Charset.defaultCharset());
     }
 
     private static String convertToHex(byte[] data) {
@@ -73,7 +79,9 @@ class ResponseUtils {
             int halfByte = (b >>> 4) & 0x0F;
             int twoHalf = 0;
             do {
-                buf.append((0 <= halfByte) && (halfByte <= 9) ? (char) ('0' + halfByte) : (char) ('a' + (halfByte - 10)));
+                buf.append((0 <= halfByte) && (halfByte <= 9)
+                        ? (char) ('0' + halfByte)
+                        : (char) ('a' + (halfByte - 10)));
                 halfByte = b & 0x0F;
             } while (twoHalf++ < 1);
         }
@@ -81,7 +89,7 @@ class ResponseUtils {
     }
 
 
-    private static String SHA1(String text, Charset charset) {
+    private static String sha1(String text, Charset charset) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             byte[] textBytes = text.getBytes(charset);

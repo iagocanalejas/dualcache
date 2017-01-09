@@ -1,5 +1,7 @@
 package com.iagocanalejas.retrofit;
 
+import android.content.Context;
+
 import com.google.gson.reflect.TypeToken;
 import com.iagocanalejas.dualcache.interfaces.Cache;
 
@@ -19,6 +21,11 @@ import retrofit2.Retrofit;
 public class CachedCallFactory extends CallAdapter.Factory {
     private final Cache<String, byte[]> mCachingSystem;
     private final Executor mAsyncExecutor;
+
+    public CachedCallFactory(Context context, int appVersion) {
+        this.mCachingSystem = BaseCache.getInstance(context, appVersion);
+        this.mAsyncExecutor = new AndroidExecutor();
+    }
 
     public CachedCallFactory(Cache<String, byte[]> cachingSystem) {
         this.mCachingSystem = cachingSystem;

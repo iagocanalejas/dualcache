@@ -51,10 +51,11 @@ class CachedCallImpl<T> implements CachedCall<T> {
             argsField.setAccessible(true);
             Object[] args = (Object[]) argsField.get(mCall);
 
-            Field requestFactoryField = mCall.getClass().getDeclaredField("requestFactory");
-            requestFactoryField.setAccessible(true);
-            Object requestFactory = requestFactoryField.get(mCall);
-            Method createMethod = requestFactory.getClass().getDeclaredMethod("create", Object[].class);
+            Field serviceMethodField = mCall.getClass().getDeclaredField("serviceMethod");
+            serviceMethodField.setAccessible(true);
+            Object requestFactory = serviceMethodField.get(mCall);
+
+            Method createMethod = requestFactory.getClass().getDeclaredMethod("toRequest", Object[].class);
             createMethod.setAccessible(true);
             return (Request) createMethod.invoke(requestFactory, new Object[]{args});
         } catch (Exception exc) {

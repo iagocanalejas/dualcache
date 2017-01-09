@@ -11,7 +11,7 @@ import retrofit2.Response;
 /**
  * Created by Canalejas on 09/01/2017.
  */
-public interface CachedCall<T> { // TODO should'nt this extend Call?¿
+public interface CachedCall<T> extends Cloneable { // TODO should'nt this extend Call?¿
     /**
      * Asynchronously send the request and notify {@code callback} of its response or if an error
      * occurred talking to the server, creating the request, or processing the response.

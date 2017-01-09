@@ -11,7 +11,11 @@
     <exclude-pattern>.*/gen/.*</exclude-pattern>
 
     <rule ref="rulesets/java/android.xml"/>
-    <rule ref="rulesets/java/clone.xml"/>
+    <rule ref="rulesets/java/clone.xml">
+        <exclude name="ProperCloneImplementation"/>
+        <exclude name="CloneThrowsCloneNotSupportedException"/>
+        <exclude name="CloneMethodMustImplementCloneable"/>
+    </rule>
     <rule ref="rulesets/java/finalizers.xml"/>
     <rule ref="rulesets/java/imports.xml">
         <!-- Espresso is designed this way !-->
