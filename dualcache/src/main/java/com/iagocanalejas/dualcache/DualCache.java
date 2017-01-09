@@ -21,7 +21,7 @@ import android.content.Context;
 import com.iagocanalejas.dualcache.caches.DiskCache;
 import com.iagocanalejas.dualcache.caches.RamCache;
 import com.iagocanalejas.dualcache.caches.RamSerializedCache;
-import com.iagocanalejas.dualcache.caches.base.LruCache;
+import com.iagocanalejas.dualcache.interfaces.Cache;
 import com.iagocanalejas.dualcache.interfaces.Parser;
 import com.iagocanalejas.dualcache.interfaces.SizeOf;
 import com.iagocanalejas.dualcache.interfaces.VolatileCache;
@@ -52,10 +52,10 @@ public class DualCache<V> implements VolatileCache<String, V> {
     // Disk conf
     private final int mMaxDiskSizeBytes;
     private final DualCacheDiskMode mDiskMode;
-    private DiskCache mDiskLruCache;
+    private Cache<String, String> mDiskLruCache;
 
     // Ram conf
-    private final LruCache mLruCache;
+    private final Cache mLruCache;
     private final DualCacheRamMode mRamMode;
 
     // Serializers
@@ -583,8 +583,10 @@ public class DualCache<V> implements VolatileCache<String, V> {
      * @param key is the key of the object.
      * @return true if the object is present in cache, false otherwise.
      */
+    @SuppressWarnings("unchecked")
+    @Override
     public boolean contains(String key) {
-        return !mRamMode.equals(DualCacheRamMode.DISABLE) && mLruCache.snapshot().containsKey(key)
+        return !mRamMode.equals(DualCacheRamMode.DISABLE) && mLruCache.contains(key)
                 || !mDiskMode.equals(DualCacheDiskMode.DISABLE) && mDiskLruCache.contains(key);
     }
 

@@ -16,14 +16,17 @@
 
 package com.iagocanalejas.dualcache.caches;
 
-import com.iagocanalejas.dualcache.caches.base.LruCache;
+
+import android.util.LruCache;
+
+import com.iagocanalejas.dualcache.interfaces.Cache;
 
 import java.nio.charset.Charset;
 
 /**
  * LRU cache used by the RAM cache layer when storing serialized object.
  */
-public class RamSerializedCache extends LruCache<String, String> {
+public class RamSerializedCache extends LruCache<String, String> implements Cache<String, String> {
 
     /**
      * @param maxCacheSize for caches that do not override {@link #sizeOf}, this is
@@ -37,5 +40,15 @@ public class RamSerializedCache extends LruCache<String, String> {
     @Override
     protected int sizeOf(String key, String value) {
         return value.getBytes(Charset.defaultCharset()).length;
+    }
+
+    @Override
+    public boolean contains(String key) {
+        return snapshot().containsKey(key);
+    }
+
+    @Override
+    public void clear() {
+        evictAll();
     }
 }

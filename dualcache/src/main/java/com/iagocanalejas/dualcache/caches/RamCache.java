@@ -1,7 +1,9 @@
 package com.iagocanalejas.dualcache.caches;
 
 
-import com.iagocanalejas.dualcache.caches.base.LruCache;
+import android.util.LruCache;
+
+import com.iagocanalejas.dualcache.interfaces.Cache;
 import com.iagocanalejas.dualcache.interfaces.SizeOf;
 
 /**
@@ -9,7 +11,7 @@ import com.iagocanalejas.dualcache.interfaces.SizeOf;
  *
  * @param <T> is the class of object stored in the cache.
  */
-public class RamCache<T> extends LruCache<String, T> {
+public class RamCache<T> extends LruCache<String, T> implements Cache<String, T> {
 
     private SizeOf<T> mHandlerSizeOf;
 
@@ -27,5 +29,15 @@ public class RamCache<T> extends LruCache<String, T> {
     @Override
     protected int sizeOf(String key, T value) {
         return mHandlerSizeOf.sizeOf(value);
+    }
+
+    @Override
+    public boolean contains(String key) {
+        return snapshot().containsKey(key);
+    }
+
+    @Override
+    public void clear() {
+        evictAll();
     }
 }

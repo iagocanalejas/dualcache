@@ -21,7 +21,7 @@ public class DiskCache implements Cache<String, String> {
     private final long mMaxCacheSize;
 
     private DiskLruCache mDiskLruCache;
-    private final DiskLock mDiskLock = new DiskLock();
+    private final CacheLock mCacheLock = new CacheLock();
 
     public DiskCache(File directory, int appVersion, long maxSize) throws IOException {
         this.mCacheDirectory = directory;
@@ -41,7 +41,7 @@ public class DiskCache implements Cache<String, String> {
     @Override
     public String get(String key) {
         try {
-            mDiskLock.lockDiskEntryWrite(key);
+            mCacheLock.lockDiskEntryWrite(key);
             DiskLruCache.Snapshot snapshotObject = mDiskLruCache.get(key);
             if (snapshotObject != null) {
                 return snapshotObject.getString(0);
@@ -49,7 +49,7 @@ public class DiskCache implements Cache<String, String> {
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         } finally {
-            mDiskLock.unLockDiskEntryWrite(key);
+            mCacheLock.unLockDiskEntryWrite(key);
         }
         return null;
     }
@@ -58,7 +58,7 @@ public class DiskCache implements Cache<String, String> {
     public String put(String key, String value) {
         String previous = null;
         try {
-            mDiskLock.lockDiskEntryWrite(key);
+            mCacheLock.lockDiskEntryWrite(key);
             // Find previous entry
             DiskLruCache.Snapshot snapshotObject = mDiskLruCache.get(key);
             if (snapshotObject != null) {
@@ -72,7 +72,7 @@ public class DiskCache implements Cache<String, String> {
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         } finally {
-            mDiskLock.unLockDiskEntryWrite(key);
+            mCacheLock.unLockDiskEntryWrite(key);
         }
         return previous;
     }
@@ -85,7 +85,7 @@ public class DiskCache implements Cache<String, String> {
     @Override
     public String remove(String key) {
         try {
-            mDiskLock.lockDiskEntryWrite(key);
+            mCacheLock.lockDiskEntryWrite(key);
             DiskLruCache.Snapshot snapshotObject = mDiskLruCache.get(key);
             if (snapshotObject != null) {
                 mDiskLruCache.remove(key);
@@ -94,7 +94,7 @@ public class DiskCache implements Cache<String, String> {
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         } finally {
-            mDiskLock.unLockDiskEntryWrite(key);
+            mCacheLock.unLockDiskEntryWrite(key);
         }
         return null;
     }
@@ -102,14 +102,14 @@ public class DiskCache implements Cache<String, String> {
     @Override
     public void clear() {
         try {
-            mDiskLock.lockFullDiskWrite();
+            mCacheLock.lockFullDiskWrite();
             mDiskLruCache.delete();
             mDiskLruCache = DiskLruCache.open(mCacheDirectory, this.mAppVersion,
                     VALUES_PER_CACHE_ENTRY, this.mMaxCacheSize);
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         } finally {
-            mDiskLock.unLockFullDiskWrite();
+            mCacheLock.unLockFullDiskWrite();
         }
     }
 

@@ -7,7 +7,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-class DiskLock {
+class CacheLock {
 
     private final ConcurrentMap<String, Lock> mEditionLocks = new ConcurrentHashMap<>();
     private final ReadWriteLock mInvalidationReadWriteLock = new ReentrantReadWriteLock();
