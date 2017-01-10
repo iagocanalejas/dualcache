@@ -50,7 +50,6 @@ public class DualCache<V> implements VolatileCache<String, V> {
     private final Logger mLogger;
 
     // Disk conf
-    private final int mMaxDiskSizeBytes;
     private final DualCacheDiskMode mDiskMode;
     private Cache<String, String> mDiskLruCache;
 
@@ -69,10 +68,11 @@ public class DualCache<V> implements VolatileCache<String, V> {
     private final Long mDefaultPersistenceTime;
 
 
-    DualCache(int appVersion, Logger logger, DualCacheRamMode ramMode,
-              Parser<V> ramSerializer, int maxRamSizeBytes, SizeOf<V> sizeOf,
-              DualCacheDiskMode diskMode, Parser<V> diskSerializer, int maxDiskSizeBytes,
-              File diskFolder, DualCacheVolatileMode volatileMode, Long defaultPersistenceTIme) {
+    private DualCache(int appVersion, Logger logger, DualCacheRamMode ramMode,
+                      Parser<V> ramSerializer, int maxRamSizeBytes, SizeOf<V> sizeOf,
+                      DualCacheDiskMode diskMode, Parser<V> diskSerializer, int maxDiskSizeBytes,
+                      File diskFolder, DualCacheVolatileMode volatileMode,
+                      Long defaultPersistenceTime) {
 
         this.mAppVersion = appVersion;
         this.mRamMode = ramMode;
@@ -80,7 +80,7 @@ public class DualCache<V> implements VolatileCache<String, V> {
         this.mDiskMode = diskMode;
         this.mDiskSerializer = diskSerializer;
         this.mLogger = logger;
-        this.mDefaultPersistenceTime = defaultPersistenceTIme;
+        this.mDefaultPersistenceTime = defaultPersistenceTime;
         this.mVolatileMode = volatileMode;
 
         switch (ramMode) {
@@ -100,15 +100,13 @@ public class DualCache<V> implements VolatileCache<String, V> {
 
         switch (diskMode) {
             case ENABLE_WITH_SPECIFIC_SERIALIZER:
-                this.mMaxDiskSizeBytes = maxDiskSizeBytes;
                 try {
-                    this.mDiskLruCache = new DiskCache(diskFolder, mAppVersion, mMaxDiskSizeBytes);
+                    this.mDiskLruCache = new DiskCache(diskFolder, mAppVersion, maxDiskSizeBytes);
                 } catch (IOException e) {
                     mLogger.logError(TAG, e);
                 }
                 break;
             default:
-                this.mMaxDiskSizeBytes = 0;
                 this.mDiskLruCache = null;
         }
 
