@@ -61,7 +61,7 @@ class ResponseUtils {
                 try {
                     return converter.convert(ResponseBody.create(null, data));
                 } catch (IOException | NullPointerException exc) {
-                    Log.e("SmartCall", "", exc);
+                    Log.e("CachedCall", "", exc);
                 }
             }
         }

@@ -51,18 +51,15 @@ public class CachedCallFactory extends CallAdapter.Factory {
                     "CachedCall must have generic type (e.g., CachedCall<ResponseBody>)");
         }
 
-        final Type responseType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
-        final Executor callbackExecutor = mAsyncExecutor;
-
         return new CallAdapter<CachedCall<?>>() {
             @Override
             public Type responseType() {
-                return responseType;
+                return ((ParameterizedType) returnType).getActualTypeArguments()[0];
             }
 
             @Override
             public <R> CachedCall<R> adapt(Call<R> call) {
-                return new CachedCallImpl<>(callbackExecutor, call, responseType(), annotations,
+                return new CachedCallImpl<>(mAsyncExecutor, call, responseType(), annotations,
                         retrofit, mCachingSystem);
             }
         };

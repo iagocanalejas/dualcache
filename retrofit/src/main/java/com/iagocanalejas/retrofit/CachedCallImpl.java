@@ -55,7 +55,8 @@ class CachedCallImpl<T> implements CachedCall<T> {
             serviceMethodField.setAccessible(true);
             Object requestFactory = serviceMethodField.get(mCall);
 
-            Method createMethod = requestFactory.getClass().getDeclaredMethod("toRequest", Object[].class);
+            Method createMethod = requestFactory.getClass()
+                    .getDeclaredMethod("toRequest", Object[].class);
             createMethod.setAccessible(true);
             return (Request) createMethod.invoke(requestFactory, new Object[]{args});
         } catch (Exception exc) {
@@ -121,6 +122,41 @@ class CachedCallImpl<T> implements CachedCall<T> {
                     if (!handleResponseOnCache(callback)) {
                         handleResponseCall(callback);
                     }
+                }
+            }).start();
+        } else {
+            mCall.enqueue(new Callback<T>() {
+                @Override
+                public void onResponse(final Call<T> call, final Response<T> response) {
+                    mExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onResponse(call, response);
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(final Call<T> call, final Throwable t) {
+                    mExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onFailure(call, t);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    @Override
+    public void refresh(final Callback<T> callback) {
+        if (buildRequest().method().equals("GET")) {
+            // Look in cache if we are in a GET method
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    handleResponseCall(callback);
                 }
             }).start();
         } else {

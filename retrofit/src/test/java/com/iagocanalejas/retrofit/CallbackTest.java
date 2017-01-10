@@ -42,11 +42,43 @@ public class CallbackTest {
     public final MockWebServer server = new MockWebServer();
 
     @Test
-    public void dispatch_isGood() throws Exception {
+    public void simpleCall() throws InterruptedException {
         /* Set up the mock webserver */
         MockResponse resp = new MockResponse().setBody("VERY_BASIC_BODY");
         server.enqueue(resp);
-//        server.enqueue(resp.clone());
+
+        Retrofit r = new Retrofit.Builder()
+                .baseUrl(server.url("/"))
+                .addConverterFactory(new ToStringConverterFactory())
+                .addCallAdapterFactory(buildSmartCacheFactory())
+                .build();
+        DemoService demoService = r.create(DemoService.class);
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        final AtomicReference<Response<String>> responseRef = new AtomicReference<>();
+        demoService.getHome().enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                responseRef.set(response);
+                latch.countDown();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                t.printStackTrace();
+                fail("Failure executing the request");
+            }
+        });
+        assertTrue(latch.await(1, TimeUnit.SECONDS));
+        assertEquals(responseRef.get().body(), "VERY_BASIC_BODY");
+
+    }
+
+    @Test
+    public void cachedCall() throws Exception {
+        /* Set up the mock webserver */
+        MockResponse resp = new MockResponse().setBody("VERY_BASIC_BODY");
+        server.enqueue(resp);
 
         Retrofit r = new Retrofit.Builder()
                 .baseUrl(server.url("/"))
@@ -72,13 +104,13 @@ public class CallbackTest {
         assertTrue(latch.await(1, TimeUnit.SECONDS));
         assertEquals(responseRef.get().body(), "VERY_BASIC_BODY");
 
-        final CountDownLatch latch2 = new CountDownLatch(2);
+        final CountDownLatch latch2 = new CountDownLatch(1);
         final AtomicReference<Response<String>> response2Ref = new AtomicReference<>();
         demoService.getHome().enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 latch2.countDown();
-                if (latch2.getCount() == 1) { // the cache hit one.
+                if (latch2.getCount() == 0) { // the cache hit one.
                     response2Ref.set(response);
                 } else { // the network one.
                     assertEquals(response.body(), response2Ref.get().body());

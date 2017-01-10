@@ -11,12 +11,21 @@ import retrofit2.Response;
 /**
  * Created by Canalejas on 09/01/2017.
  */
-public interface CachedCall<T> extends Cloneable { // TODO should'nt this extend Call?¿
+public interface CachedCall<T> extends Cloneable {
     /**
      * Asynchronously send the request and notify {@code callback} of its response or if an error
      * occurred talking to the server, creating the request, or processing the response.
      */
     void enqueue(Callback<T> callback);
+
+    /**
+     * Asynchronously send the request and notify {@code callback} of its response or if an error
+     * occurred talking to the server, creating the request, or processing the response.
+     *
+     * If we are in a GET operation ignores cache and send a new request.
+     * In other operations send a new request.
+     */
+    void refresh(Callback<T> callback);
 
     /**
      * Returns a runtime {@link Type} that corresponds to the response type specified in your
@@ -35,10 +44,6 @@ public interface CachedCall<T> extends Cloneable { // TODO should'nt this extend
      * has already been.
      */
     CachedCall<T> clone();
-
-    /* ================================================================ */
-    /* Now it's time for the blocking methods - which can't be smart :(
-    /* ================================================================ */
 
     /**
      * Synchronously send the request and return its response. NOTE: No smart caching allowed!

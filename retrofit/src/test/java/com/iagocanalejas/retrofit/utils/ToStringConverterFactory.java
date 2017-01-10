@@ -3,6 +3,7 @@ package com.iagocanalejas.retrofit.utils;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -17,6 +18,7 @@ import retrofit2.Retrofit;
 public class ToStringConverterFactory extends Converter.Factory {
     private static final MediaType MEDIA_TYPE = MediaType.parse("text/plain");
 
+
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
                                                             Retrofit retrofit) {
@@ -24,7 +26,7 @@ public class ToStringConverterFactory extends Converter.Factory {
             return new Converter<ResponseBody, String>() {
                 @Override
                 public String convert(ResponseBody value) throws IOException {
-                    return value.string();
+                    return new String(value.bytes(), Charset.defaultCharset());
                 }
             };
         }
@@ -36,6 +38,7 @@ public class ToStringConverterFactory extends Converter.Factory {
                                                           Annotation[] parameterAnnotations,
                                                           Annotation[] methodAnnotations,
                                                           Retrofit retrofit) {
+
         if (String.class.equals(type)) {
             return new Converter<String, RequestBody>() {
                 @Override
