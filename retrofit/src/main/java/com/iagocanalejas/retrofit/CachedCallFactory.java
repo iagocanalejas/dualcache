@@ -48,7 +48,7 @@ public class CachedCallFactory extends CallAdapter.Factory {
 
         if (!(returnType instanceof ParameterizedType)) {
             throw new IllegalStateException(
-                    "SmartCall must have generic type (e.g., SmartCall<ResponseBody>)");
+                    "CachedCall must have generic type (e.g., CachedCall<ResponseBody>)");
         }
 
         final Type responseType = ((ParameterizedType) returnType).getActualTypeArguments()[0];

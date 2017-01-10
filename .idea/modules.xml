@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/DualCache.iml" filepath="$PROJECT_DIR$/DualCache.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dualcache/dualcache.iml" filepath="$PROJECT_DIR$/dualcache/dualcache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dualcache-gsonserializer/dualcache-gsonserializer.iml" filepath="$PROJECT_DIR$/dualcache-gsonserializer/dualcache-gsonserializer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dualcache-jacksonserializer/dualcache-jacksonserializer.iml" filepath="$PROJECT_DIR$/dualcache-jacksonserializer/dualcache-jacksonserializer.iml" />
       <module fileurl="file://$PROJECT_DIR$/gsonserializer/gsonserializer.iml" filepath="$PROJECT_DIR$/gsonserializer/gsonserializer.iml" />
       <module fileurl="file://$PROJECT_DIR$/jacksonserializer/jacksonserializer.iml" filepath="$PROJECT_DIR$/jacksonserializer/jacksonserializer.iml" />
       <module fileurl="file://$PROJECT_DIR$/retrofit/retrofit.iml" filepath="$PROJECT_DIR$/retrofit/retrofit.iml" />

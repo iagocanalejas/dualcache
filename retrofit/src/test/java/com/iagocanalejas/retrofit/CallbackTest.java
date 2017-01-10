@@ -35,8 +35,7 @@ public class CallbackTest {
      * Builds a Retrofit SmartCache factory without Android executor
      */
     private CallAdapter.Factory buildSmartCacheFactory() {
-        return new CachedCallFactory(new MockCachingSystem(),
-                new MainThreadExecutor());
+        return new CachedCallFactory(new MockCachingSystem(), new MainThreadExecutor());
     }
 
     @Rule
@@ -45,10 +44,9 @@ public class CallbackTest {
     @Test
     public void dispatch_isGood() throws Exception {
         /* Set up the mock webserver */
-        MockResponse resp = new MockResponse();
-        resp.setBody("VERY_BASIC_BODY");
+        MockResponse resp = new MockResponse().setBody("VERY_BASIC_BODY");
         server.enqueue(resp);
-        server.enqueue(resp.clone());
+//        server.enqueue(resp.clone());
 
         Retrofit r = new Retrofit.Builder()
                 .baseUrl(server.url("/"))
@@ -68,7 +66,7 @@ public class CallbackTest {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                fail("Failure executing the request.");
+                fail("Failure executing the request: " + t.getMessage());
             }
         });
         assertTrue(latch.await(1, TimeUnit.SECONDS));
@@ -89,10 +87,11 @@ public class CallbackTest {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                fail("Failure executing the request.");
+                fail("Failure executing the request: " + t.getMessage());
             }
         });
         assertTrue(latch2.await(1, TimeUnit.SECONDS));
+        server.shutdown();
     }
 
     private static class MainThreadExecutor implements Executor {

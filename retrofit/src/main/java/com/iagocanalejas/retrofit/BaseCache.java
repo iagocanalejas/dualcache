@@ -44,4 +44,8 @@ public class BaseCache {
                 .build();
     }
 
+    public static DualCache.Builder<byte[]> getPreconfiguredBuilder(int appVersion) {
+        return new DualCache.Builder<>(CACHE_NAME, appVersion);
+    }
+
 }
