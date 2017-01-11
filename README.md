@@ -13,7 +13,7 @@ This library is highly configurable :
 
 
 | Configurations | Disk : `Specific serializer` | Disk: `References` | Disk : `Volatil` | Disk: `disable` |
-| -------------- | ---------------------------- | ---------------- | --------------- |
+| -------------- | ---------------------------- | ------------------ | ---------------- | --------------- |
 | Ram : `Specific serializer` | YES | NO | YES | YES |
 | Ram : `References` | YES | NO | YES | YES |
 | Ram : `Volatil` | YES | NO | YES | YES |
@@ -74,7 +74,7 @@ dependencies {
 
 All the configuration of the cache is done when you are building the cache through its `Builder` class.
 
-**It's mandatory use the `useHashedKey` method if your KEY_TYPE is not String**
+**It's mandatory to use the `useHashedKey` method if your KEY_TYPE is not String**
 
 # Basic Cache Example
 
@@ -82,7 +82,7 @@ All the configuration of the cache is done when you are building the cache throu
  Basic cache with references in RAM and a default serializer on disk :
 
 ```Java
-cache = new Builder<KEY_TYPE, VALUE_TYPE>(CACHE_NAME, TEST_APP_VERSION, YourClass.class)
+cache = new Builder<KEY_TYPE, VALUE_TYPE>(CACHE_NAME, TEST_APP_VERSION)
     .enableLog()
     .useReferenceInRam(RAM_MAX_SIZE, new SizeOfYourClass())
     .useSerializerInDisk(DISK_MAX_SIZE, true, new SerializerForYourClass(), getContext())
@@ -98,7 +98,7 @@ implemented this feature.
  With this type of cache your entries will only live for the PERSIST_TIME you set.
 
 ```Java
-cache = new Builder<KEY_TYPE, VALUE_TYPE>(CACHE_NAME, TEST_APP_VERSION, YourClass.class)
+cache = new Builder<KEY_TYPE, VALUE_TYPE>(CACHE_NAME, TEST_APP_VERSION)
     .enableLog()
     .useReferenceInRam(RAM_MAX_SIZE, new SizeOfYourClass())
     .useSerializerInDisk(DISK_MAX_SIZE, true, new SerializerForYourClass(), getContext())
@@ -113,7 +113,8 @@ cache = new Builder<KEY_TYPE, VALUE_TYPE>(CACHE_NAME, TEST_APP_VERSION, YourClas
   	  	 ```Java
 	     builder = builder.useHashedKey(new MyHasher());
 	     ```
-	**[Hasher Details](docs/hasher.md)**
+	     
+	  **[Hasher Details](docs/hasher.md)**
 
   - Ram Configuration
 	  - Serializer in RAM:
@@ -130,9 +131,8 @@ cache = new Builder<KEY_TYPE, VALUE_TYPE>(CACHE_NAME, TEST_APP_VERSION, YourClas
 	     ```Java
 	     builder = builder.noRam();
 	     ```
-	**[SizeOf Details](docs/sizeof.md)**
-
-	**[Serializer Details](docs/serializer.md)**
+	     
+	  **[SizeOf Details](docs/sizeof.md)**, **[Serializer Details](docs/serializer.md)**
 
   - Disk Configuration
 	  - Serializer in Disk:
@@ -145,7 +145,8 @@ cache = new Builder<KEY_TYPE, VALUE_TYPE>(CACHE_NAME, TEST_APP_VERSION, YourClas
 	     ```Java
 	     builder = builder.noDisk();
 	     ```
-	**[Serializer Details](docs/serializer.md)**
+	     
+	  **[Serializer Details](docs/serializer.md)**
 
   - Volatile Configuration
 	  - Volatile Entries:
