@@ -21,7 +21,7 @@ import com.iagocanalejas.dualcache.caches.RamCache;
 import com.iagocanalejas.dualcache.caches.RamSerializedCache;
 import com.iagocanalejas.dualcache.interfaces.Cache;
 import com.iagocanalejas.dualcache.interfaces.Hasher;
-import com.iagocanalejas.dualcache.interfaces.Parser;
+import com.iagocanalejas.dualcache.interfaces.Serializer;
 import com.iagocanalejas.dualcache.interfaces.SizeOf;
 import com.iagocanalejas.dualcache.interfaces.VolatileCache;
 import com.iagocanalejas.dualcache.modes.DualCacheDiskMode;
@@ -29,7 +29,7 @@ import com.iagocanalejas.dualcache.modes.DualCacheKeyMode;
 import com.iagocanalejas.dualcache.modes.DualCacheRamMode;
 import com.iagocanalejas.dualcache.modes.DualCacheVolatileMode;
 import com.iagocanalejas.dualcache.utils.VolatileEntry;
-import com.iagocanalejas.dualcache.utils.VolatileParser;
+import com.iagocanalejas.dualcache.utils.VolatileSerializer;
 import com.iagocanalejas.dualcache.utils.VolatileSizeOf;
 
 import java.io.File;
@@ -62,10 +62,10 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
     private final DualCacheRamMode mRamMode;
 
     // Serializers
-    private final VolatileParser<V> mVolatileRamSerializer;
-    private final VolatileParser<V> mVolatileDiskSerializer;
-    private final Parser<V> mDiskSerializer;
-    private final Parser<V> mRamSerializer;
+    private final VolatileSerializer<V> mVolatileRamSerializer;
+    private final VolatileSerializer<V> mVolatileDiskSerializer;
+    private final Serializer<V> mDiskSerializer;
+    private final Serializer<V> mRamSerializer;
 
     // Persistence conf
     private final DualCacheVolatileMode mVolatileMode;
@@ -73,8 +73,8 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
 
 
     DualCache(int appVersion, Logger logger, DualCacheKeyMode keyMode, Hasher<K> hasher,
-              DualCacheRamMode ramMode, Parser<V> ramSerializer, int maxRamSizeBytes,
-              SizeOf<V> sizeOf, DualCacheDiskMode diskMode, Parser<V> diskSerializer,
+              DualCacheRamMode ramMode, Serializer<V> ramSerializer, int maxRamSizeBytes,
+              SizeOf<V> sizeOf, DualCacheDiskMode diskMode, Serializer<V> diskSerializer,
               int maxDiskSizeBytes, File diskFolder, DualCacheVolatileMode volatileMode,
               Long defaultPersistenceTime) {
 
@@ -120,14 +120,14 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
         //region Init Volatile Serializers
         if (!volatileMode.equals(DualCacheVolatileMode.PERSISTENCE)
                 && ramMode.equals(DualCacheRamMode.ENABLE_WITH_SPECIFIC_SERIALIZER)) {
-            mVolatileRamSerializer = new VolatileParser<>(ramSerializer);
+            mVolatileRamSerializer = new VolatileSerializer<>(ramSerializer);
         } else {
             mVolatileRamSerializer = null;
         }
 
         if (!volatileMode.equals(DualCacheVolatileMode.PERSISTENCE)
                 && diskMode.equals(DualCacheDiskMode.ENABLE_WITH_SPECIFIC_SERIALIZER)) {
-            mVolatileDiskSerializer = new VolatileParser<>(diskSerializer);
+            mVolatileDiskSerializer = new VolatileSerializer<>(diskSerializer);
         } else {
             mVolatileDiskSerializer = null;
         }
@@ -598,14 +598,14 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
      */
     @Override
     public void clear() {
-        invalidateDisk();
-        invalidateRAM();
+        clearDisk();
+        clearRam();
     }
 
     /**
      * Remove all objects from RAM.
      */
-    public void invalidateRAM() {
+    public void clearRam() {
         if (!mRamMode.equals(DualCacheRamMode.DISABLE)) {
             mLruCache.clear();
         }
@@ -614,7 +614,7 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
     /**
      * Remove all objects from Disk.
      */
-    public void invalidateDisk() {
+    public void clearDisk() {
         if (!mDiskMode.equals(DualCacheDiskMode.DISABLE)) {
             mDiskLruCache.clear();
         }

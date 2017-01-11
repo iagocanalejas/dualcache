@@ -6,7 +6,7 @@ package com.iagocanalejas.dualcache.interfaces;
  *
  * @param <T> is the class of object to serialized/deserialized.
  */
-public interface Parser<T> {
+public interface Serializer<T> {
     /**
      * Deserialization of a String into an object.
      *

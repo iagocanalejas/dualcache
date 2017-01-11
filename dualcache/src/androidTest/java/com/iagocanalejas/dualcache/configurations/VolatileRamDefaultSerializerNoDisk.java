@@ -12,7 +12,7 @@ public class VolatileRamDefaultSerializerNoDisk extends DualCacheTest {
         super.setUp();
         cache = new Builder<String, AbstractVehicle>(CACHE_NAME, TEST_APP_VERSION)
                 .enableLog()
-                .useSerializerInRam(RAM_MAX_SIZE, mDefaultParser)
+                .useSerializerInRam(RAM_MAX_SIZE, mDefaultSerializer)
                 .noDisk()
                 .useVolatileCache(1000 * 60) // 1 min
                 .build();

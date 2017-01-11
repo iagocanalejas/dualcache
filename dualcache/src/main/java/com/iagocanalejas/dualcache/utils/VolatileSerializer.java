@@ -1,21 +1,21 @@
 package com.iagocanalejas.dualcache.utils;
 
 
-import com.iagocanalejas.dualcache.interfaces.Parser;
+import com.iagocanalejas.dualcache.interfaces.Serializer;
 
 /**
  * Created by Iagocanalejas on 26/12/2016.
- * Wraps the default {@link Parser} to add required timestamp value for volatile entries
+ * Wraps the default {@link Serializer} to add required timestamp value for volatile entries
  *
  * @see {@link VolatileEntry}
  */
-public class VolatileParser<T> implements Parser<VolatileEntry<T>> {
+public class VolatileSerializer<T> implements Serializer<VolatileEntry<T>> {
 
     private static final String TIMESTAMP_KEY = " timestamp_key:";
 
-    private Parser<T> mSerializer;
+    private Serializer<T> mSerializer;
 
-    public VolatileParser(Parser<T> serializer) {
+    public VolatileSerializer(Serializer<T> serializer) {
         this.mSerializer = serializer;
     }
 

@@ -12,8 +12,8 @@ public class RamDefaultSerializerDiskDefaultSerializer extends DualCacheJacksonT
         super.setUp();
         cache = new Builder<String, AbstractVehicle>(CACHE_NAME, TEST_APP_VERSION)
                 .enableLog()
-                .useSerializerInRam(RAM_MAX_SIZE, mDefaultParser)
-                .useSerializerInDisk(DISK_MAX_SIZE, true, mDefaultParser, getContext())
+                .useSerializerInRam(RAM_MAX_SIZE, mDefaultSerializer)
+                .useSerializerInDisk(DISK_MAX_SIZE, true, mDefaultSerializer, getContext())
                 .build();
     }
 }

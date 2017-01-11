@@ -13,7 +13,7 @@ public class RamReferenceDiskDefaultSerializer extends DualCacheJacksonTest {
         cache = new Builder<String, AbstractVehicle>(CACHE_NAME, TEST_APP_VERSION)
                 .enableLog()
                 .useReferenceInRam(RAM_MAX_SIZE, new SizeOfVehicleForTesting())
-                .useSerializerInDisk(DISK_MAX_SIZE, true, mDefaultParser, getContext())
+                .useSerializerInDisk(DISK_MAX_SIZE, true, mDefaultSerializer, getContext())
                 .build();
     }
 }

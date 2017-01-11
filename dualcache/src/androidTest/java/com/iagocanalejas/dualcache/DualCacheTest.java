@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.iagocanalejas.dualcache.interfaces.Parser;
+import com.iagocanalejas.dualcache.interfaces.Serializer;
 import com.iagocanalejas.dualcache.interfaces.SizeOf;
 import com.iagocanalejas.dualcache.modes.DualCacheDiskMode;
 import com.iagocanalejas.dualcache.modes.DualCacheRamMode;
@@ -34,7 +34,7 @@ public abstract class DualCacheTest {
     protected static final String CACHE_NAME = "test";
     protected static final int TEST_APP_VERSION = 0;
     protected DualCache<String, AbstractVehicle> cache;
-    protected Parser<AbstractVehicle> mDefaultParser;
+    protected Serializer<AbstractVehicle> mDefaultSerializer;
     private Context context;
 
     protected Context getContext() {
@@ -44,8 +44,8 @@ public abstract class DualCacheTest {
     @Before
     public void setUp() throws Exception {
         context = InstrumentationRegistry.getTargetContext();
-        // Default Parser
-        mDefaultParser = new JsonSerializer<>(AbstractVehicle.class);
+        // Default Serializer
+        mDefaultSerializer = new JsonSerializer<>(AbstractVehicle.class);
     }
 
     @After
@@ -67,7 +67,7 @@ public abstract class DualCacheTest {
             assertEquals(true, cache.contains(keyCar));
         }
 
-        cache.invalidateRAM();
+        cache.clearRam();
         if (cache.getDiskMode().equals(DualCacheDiskMode.DISABLE)) {
             assertNull(cache.get(keyCar));
             assertEquals(false, cache.contains(keyCar));
@@ -113,22 +113,22 @@ public abstract class DualCacheTest {
         CoolCar car = new CoolCar(CoolCar.class.getSimpleName());
         String keyCar = "car";
         cache.put(keyCar, car);
-        cache.invalidateRAM();
+        cache.clearRam();
         if (cache.getDiskMode().equals(DualCacheDiskMode.DISABLE)) {
             assertNull(cache.get(keyCar));
             assertEquals(false, cache.contains(keyCar));
         } else {
             assertEquals(car, cache.get(keyCar));
             assertEquals(true, cache.contains(keyCar));
-            cache.invalidateRAM();
+            cache.clearRam();
         }
 
-        cache.invalidateDisk();
+        cache.clearDisk();
         assertNull(cache.get(keyCar));
         assertEquals(false, cache.contains(keyCar));
 
         cache.put(keyCar, car);
-        cache.invalidateRAM();
+        cache.clearRam();
         if (cache.getDiskMode().equals(DualCacheDiskMode.DISABLE)) {
             assertNull(cache.get(keyCar));
             assertEquals(false, cache.contains(keyCar));
@@ -164,7 +164,7 @@ public abstract class DualCacheTest {
         for (int i = 0; i < numberOfItemsToAddForRAMEviction; i++) {
             cache.put(keyCar + i, new CoolCar(CoolCar.class.getSimpleName()));
         }
-        cache.invalidateDisk();
+        cache.clearDisk();
         assertNull(cache.get(keyCar));
         assertEquals(false, cache.contains(keyCar));
 
@@ -237,7 +237,7 @@ public abstract class DualCacheTest {
         };
     }
 
-    public static class SerializerForTesting implements Parser<AbstractVehicle> {
+    public static class SerializerForTesting implements Serializer<AbstractVehicle> {
 
         @Override
         public AbstractVehicle fromString(String data) {

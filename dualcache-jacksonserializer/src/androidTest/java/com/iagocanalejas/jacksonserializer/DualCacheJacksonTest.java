@@ -15,7 +15,7 @@ public abstract class DualCacheJacksonTest extends com.iagocanalejas.dualcache.D
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        mDefaultParser = new JacksonSerializer<>(AbstractVehicle.class);
+        mDefaultSerializer = new JacksonSerializer<>(AbstractVehicle.class);
     }
 
 }

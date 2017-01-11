@@ -6,7 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.iagocanalejas.dualcache.Builder;
 import com.iagocanalejas.dualcache.DualCache;
-import com.iagocanalejas.dualcache.interfaces.Parser;
+import com.iagocanalejas.dualcache.interfaces.Serializer;
 import com.iagocanalejas.dualcache.testobjects.JsonSerializer;
 
 import org.junit.After;
@@ -32,7 +32,7 @@ public class LanguageChangeNullPointer {
     public void setUp() throws Exception {
         Context context = InstrumentationRegistry.getTargetContext();
         File cacheDir = new File(context.getCacheDir(), CACHE_NAME);
-        Parser<String> jsonSerializer = new JsonSerializer<>(String.class);
+        Serializer<String> jsonSerializer = new JsonSerializer<>(String.class);
         mCache = new Builder<String, String>(CACHE_NAME, 0)
                 .enableLog()
                 .useSerializerInRam(CACHE_RAM_ENTRIES, jsonSerializer)

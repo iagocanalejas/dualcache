@@ -13,7 +13,7 @@ public class NoRamDiskDefaultSerializer extends DualCacheJacksonTest {
         cache = new Builder<String, AbstractVehicle>(CACHE_NAME, TEST_APP_VERSION)
                 .enableLog()
                 .noRam()
-                .useSerializerInDisk(DISK_MAX_SIZE, true, mDefaultParser, getContext())
+                .useSerializerInDisk(DISK_MAX_SIZE, true, mDefaultSerializer, getContext())
                 .build();
     }
 }

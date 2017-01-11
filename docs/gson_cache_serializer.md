@@ -8,7 +8,7 @@
 
     ```ruby
     dependencies {
-      compile 'com.github.iagocanalejas:dualcache:gsonserializer:<VERSION>'
+      compile 'com.github.iagocanalejas.dualcache:gsonserializer:<VERSION>'
     }
     ```
     

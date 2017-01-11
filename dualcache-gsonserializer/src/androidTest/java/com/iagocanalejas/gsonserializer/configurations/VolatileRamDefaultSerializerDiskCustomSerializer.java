@@ -13,7 +13,7 @@ public class VolatileRamDefaultSerializerDiskCustomSerializer extends DualCacheG
         super.setUp();
         cache = new Builder<String, AbstractVehicle>(CACHE_NAME, TEST_APP_VERSION)
                 .enableLog()
-                .useSerializerInRam(RAM_MAX_SIZE, mDefaultParser)
+                .useSerializerInRam(RAM_MAX_SIZE, mDefaultSerializer)
                 .useSerializerInDisk(DISK_MAX_SIZE, true, new DualCacheTest.SerializerForTesting(), getContext())
                 .useVolatileCache(1000 * 60) // 1 min
                 .build();

@@ -13,7 +13,7 @@ public class VolatileRamReferenceDiskDefaultSerializer extends DualCacheGsonTest
         cache = new Builder<String, AbstractVehicle>(CACHE_NAME, TEST_APP_VERSION)
                 .enableLog()
                 .useReferenceInRam(RAM_MAX_SIZE, new SizeOfVehicleForTesting())
-                .useSerializerInDisk(DISK_MAX_SIZE, true, mDefaultParser, getContext())
+                .useSerializerInDisk(DISK_MAX_SIZE, true, mDefaultSerializer, getContext())
                 .useVolatileCache(1000 * 60) // 1 min
                 .build();
     }
