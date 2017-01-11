@@ -9,6 +9,7 @@ android:
       - android-25
       - extra-google-m2repository
       - extra-android-m2repository
+      - sys-img-armeabi-v7a-android-25
 
 before_install:
   - chmod +x gradlew
