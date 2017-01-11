@@ -13,7 +13,7 @@ public class RamReferenceDiskCustomSerializer extends DualCacheGsonTest {
         super.setUp();
         cache = new DualCache.Builder<AbstractVehicle>(CACHE_NAME, TEST_APP_VERSION)
                 .enableLog()
-                .useReferenceInRam(RAM_MAX_SIZE, new DualCacheTest.SizeOfVehiculeForTesting())
+                .useReferenceInRam(RAM_MAX_SIZE, new SizeOfVehicleForTesting())
                 .useSerializerInDisk(DISK_MAX_SIZE, true, new DualCacheTest.SerializerForTesting(), getContext())
                 .build();
     }

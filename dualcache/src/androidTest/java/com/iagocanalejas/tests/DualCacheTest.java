@@ -13,6 +13,7 @@ import com.iagocanalejas.dualcache.modes.DualCacheRamMode;
 import com.iagocanalejas.tests.testobjects.AbstractVehicle;
 import com.iagocanalejas.tests.testobjects.CoolBike;
 import com.iagocanalejas.tests.testobjects.CoolCar;
+import com.iagocanalejas.tests.testobjects.JsonSerializer;
 
 import org.junit.After;
 import org.junit.Before;
@@ -44,6 +45,8 @@ public abstract class DualCacheTest {
     @Before
     public void setUp() throws Exception {
         context = InstrumentationRegistry.getTargetContext();
+        // Default Parser
+        mDefaultParser = new JsonSerializer<>(AbstractVehicle.class);
     }
 
     @After
@@ -239,9 +242,9 @@ public abstract class DualCacheTest {
 
         @Override
         public AbstractVehicle fromString(String data) {
-            if (new String(data).equals(CoolBike.class.getSimpleName())) {
+            if (data.equals(CoolBike.class.getSimpleName())) {
                 return new CoolBike(CoolBike.class.getSimpleName());
-            } else if (new String(data).equals(CoolCar.class.getSimpleName())) {
+            } else if (data.equals(CoolCar.class.getSimpleName())) {
                 return new CoolCar(CoolCar.class.getSimpleName());
             } else {
                 return null;
@@ -254,7 +257,7 @@ public abstract class DualCacheTest {
         }
     }
 
-    public static class SizeOfVehiculeForTesting implements SizeOf<AbstractVehicle> {
+    public static class SizeOfVehicleForTesting implements SizeOf<AbstractVehicle> {
 
         @Override
         public int sizeOf(AbstractVehicle object) {

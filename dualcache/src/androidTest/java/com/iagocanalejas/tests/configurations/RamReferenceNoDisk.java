@@ -2,11 +2,10 @@ package com.iagocanalejas.tests.configurations;
 
 
 import com.iagocanalejas.dualcache.DualCache;
-import com.iagocanalejas.tests.DualCacheJacksonTest;
 import com.iagocanalejas.tests.DualCacheTest;
 import com.iagocanalejas.tests.testobjects.AbstractVehicle;
 
-public class RamReferenceDiskCustomSerializer extends DualCacheJacksonTest {
+public class RamReferenceNoDisk extends DualCacheTest {
 
     @Override
     public void setUp() throws Exception {
@@ -14,7 +13,7 @@ public class RamReferenceDiskCustomSerializer extends DualCacheJacksonTest {
         cache = new DualCache.Builder<AbstractVehicle>(CACHE_NAME, TEST_APP_VERSION)
                 .enableLog()
                 .useReferenceInRam(RAM_MAX_SIZE, new SizeOfVehicleForTesting())
-                .useSerializerInDisk(DISK_MAX_SIZE, true, new DualCacheTest.SerializerForTesting(), getContext())
+                .noDisk()
                 .build();
     }
 }

@@ -2,11 +2,10 @@ package com.iagocanalejas.tests.configurations;
 
 
 import com.iagocanalejas.dualcache.DualCache;
-import com.iagocanalejas.tests.DualCacheJacksonTest;
 import com.iagocanalejas.tests.DualCacheTest;
 import com.iagocanalejas.tests.testobjects.AbstractVehicle;
 
-public class RamReferenceDiskCustomSerializer extends DualCacheJacksonTest {
+public class RamReferenceDiskCustomSerializer extends DualCacheTest {
 
     @Override
     public void setUp() throws Exception {
