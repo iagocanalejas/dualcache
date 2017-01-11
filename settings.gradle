@@ -1,1 +1,1 @@
-include ':app', ':dualcache', ':dualcache-gsonserializer', ':dualcache-jacksonserializer', ':tests'
+include ':dualcache', ':dualcache-gsonserializer', ':dualcache-jacksonserializer', ':tests'

@@ -2,8 +2,8 @@
 
 ext {
     // Base
-    libraryCode = 2
-    libraryName = '1.1.0'
+    libraryCode = 3
+    libraryName = '1.2.1'
     compileSdkVersion = 25
     buildToolsVersion = '25.0.2'
     supportLib = '25.1.0'
@@ -14,18 +14,10 @@ ext {
 
     // Tests
     androidSupportTestRunner = '0.5'
-    jacksonDatabindVersion = '2.4.2'
-    mockwebserver = '3.5.0'
 
     // Serializers
     gsonVersion = '2.8.0'
     jacksonVersion = '2.8.5'
-
-    // Retrofit
-    retrofit = '2.1.0'
-
-    // App
-    butterknifeVersion = '8.4.0'
 }
 
 buildscript {

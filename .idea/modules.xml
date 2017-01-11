@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DualCache.iml" filepath="$PROJECT_DIR$/DualCache.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dualcache/dualcache.iml" filepath="$PROJECT_DIR$/dualcache/dualcache.iml" />
       <module fileurl="file://$PROJECT_DIR$/dualcache-gsonserializer/dualcache-gsonserializer.iml" filepath="$PROJECT_DIR$/dualcache-gsonserializer/dualcache-gsonserializer.iml" />
       <module fileurl="file://$PROJECT_DIR$/dualcache-jacksonserializer/dualcache-jacksonserializer.iml" filepath="$PROJECT_DIR$/dualcache-jacksonserializer/dualcache-jacksonserializer.iml" />
