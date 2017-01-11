@@ -8,7 +8,7 @@
 
     ```ruby
     dependencies {
-      compile 'com.github.iagocanalejas.dualcache::jacksonserializer:<VERSION>'
+      compile 'com.github.iagocanalejas.dualcache:jacksonserializer:<VERSION>'
     }
     ```
 
