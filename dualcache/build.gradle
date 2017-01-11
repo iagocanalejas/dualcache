@@ -13,6 +13,7 @@ android {
         targetSdkVersion project.compileSdkVersion
         versionCode project.libraryCode
         versionName project.libraryName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     packagingOptions {
@@ -26,5 +27,19 @@ android {
 }
 
 dependencies {
+    androidTestCompile "com.android.support.test:runner:${project.androidSupportTestRunner}"
     compile 'com.jakewharton:disklrucache:2.0.2'
+}
+
+task jarTest(type: Jar) {
+    classifier = 'test'
+    from "$buildDir/intermediates/classes/androidTest/debug"
+}
+
+configurations {
+    testOutput
+}
+
+artifacts {
+    testOutput jarTest
 }

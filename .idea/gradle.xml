@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$/dualcache" />
             <option value="$PROJECT_DIR$/dualcache-gsonserializer" />
             <option value="$PROJECT_DIR$/dualcache-jacksonserializer" />
-            <option value="$PROJECT_DIR$/tests" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

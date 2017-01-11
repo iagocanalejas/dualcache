@@ -13,6 +13,7 @@ android {
         targetSdkVersion project.compileSdkVersion
         versionCode project.libraryCode
         versionName project.libraryName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     packagingOptions {
@@ -27,4 +28,7 @@ android {
 dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:$project.jacksonVersion"
     compile project(path: ':dualcache')
+
+    androidTestCompile "com.android.support.test:runner:${project.androidSupportTestRunner}"
+    androidTestCompile project(path: ':dualcache', configuration: 'testOutput')
 }
