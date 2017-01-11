@@ -19,11 +19,11 @@ Just needed to get a _unique_ String from your key object. You can do it as you 
   - Serialize your object.
   - Get a hashed string from your object.
 
-		```java
-		@Override
-        public String hash(KEY_TYPE key) {
-            return string_key;
-        }
-		```
+	```java
+	@Override
+	public String hash(KEY_TYPE key) {
+	    return string_key;
+	}
+	```
 
 The library includes some hashing utilities in [Hashing](dualcache/src/main/java/com/iagocanalejas/dualcache/hashing/Hashing.java) class.
