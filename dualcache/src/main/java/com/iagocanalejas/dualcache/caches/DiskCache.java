@@ -1,5 +1,6 @@
 package com.iagocanalejas.dualcache.caches;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.iagocanalejas.dualcache.interfaces.Cache;
@@ -34,12 +35,12 @@ public class DiskCache implements Cache<String, String> {
     }
 
     @Override
-    public boolean contains(String key) {
+    public boolean contains(@NonNull String key) {
         return get(key) != null;
     }
 
     @Override
-    public String get(String key) {
+    public String get(@NonNull String key) {
         try {
             mCacheLock.lockDiskEntryWrite(key);
             DiskLruCache.Snapshot snapshotObject = mDiskLruCache.get(key);
@@ -55,7 +56,7 @@ public class DiskCache implements Cache<String, String> {
     }
 
     @Override
-    public String put(String key, String value) {
+    public String put(@NonNull String key, String value) {
         String previous = null;
         try {
             mCacheLock.lockDiskEntryWrite(key);
@@ -83,7 +84,7 @@ public class DiskCache implements Cache<String, String> {
     }
 
     @Override
-    public String remove(String key) {
+    public String remove(@NonNull String key) {
         try {
             mCacheLock.lockDiskEntryWrite(key);
             DiskLruCache.Snapshot snapshotObject = mDiskLruCache.get(key);

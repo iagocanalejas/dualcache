@@ -16,6 +16,8 @@
 
 package com.iagocanalejas.dualcache;
 
+import android.support.annotation.NonNull;
+
 import com.iagocanalejas.dualcache.caches.DiskCache;
 import com.iagocanalejas.dualcache.caches.RamCache;
 import com.iagocanalejas.dualcache.caches.RamSerializedCache;
@@ -292,7 +294,7 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
      * @param entryLife persistence time for given entry
      */
     @Override
-    public V put(K key, V object, long entryLife) {
+    public V put(@NonNull K key, V object, long entryLife) {
         String nKey = (mKeyMode.equals(DualCacheKeyMode.HASHED_KEY))
                 ? mHasher.hash(key)
                 : (String) key;
@@ -311,7 +313,7 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
      * @param object is the object to put in cache.
      */
     @Override
-    public V put(K key, V object) {
+    public V put(@NonNull K key, V object) {
         String nKey = (mKeyMode.equals(DualCacheKeyMode.HASHED_KEY))
                 ? mHasher.hash(key)
                 : (String) key;
@@ -488,7 +490,7 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
      * return null.
      */
     @Override
-    public V get(K key) {
+    public V get(@NonNull K key) {
         String nKey = (mKeyMode.equals(DualCacheKeyMode.HASHED_KEY))
                 ? mHasher.hash(key)
                 : (String) key;
@@ -569,7 +571,7 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public V remove(K key) {
+    public V remove(@NonNull K key) {
         String nKey = (mKeyMode.equals(DualCacheKeyMode.HASHED_KEY))
                 ? mHasher.hash(key)
                 : (String) key;
@@ -628,7 +630,7 @@ public class DualCache<K, V> implements VolatileCache<K, V> {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean contains(K key) {
+    public boolean contains(@NonNull K key) {
         String nKey = (mKeyMode.equals(DualCacheKeyMode.HASHED_KEY))
                 ? mHasher.hash(key)
                 : (String) key;

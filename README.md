@@ -219,7 +219,7 @@ cache = new Builder<KEY_TYPE, VALUE_TYPE>(CACHE_NAME, TEST_APP_VERSION)
 # Pull Requests
 I welcome and encourage all pull requests. Here are some basic rules to follow to ensure timely addition of your request:
   1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (on Mac) or Ctrl+Alt+L on Windows to reformat code with Android Studio defaults.
-  2. Pull Request must pass all tests, you can check the style with `gradlew check` and run tests with `gradlew module:connectedAndroidTest` (Dualcache tests must be ran first)
+  2. Pull Request must pass all tests, you can check the style with `gradlew check` and run tests with `gradlew dualcache:connectedAndroidTest` (Dualcache tests must be ran first)
   2. If its a feature, bugfix, or anything please only change code to what you specify.
   3. Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge.
   4. Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.

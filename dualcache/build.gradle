@@ -30,6 +30,7 @@ dependencies {
     androidTestCompile "com.android.support.test:runner:${project.androidSupportTestRunner}"
     androidTestCompile "com.fasterxml.jackson.core:jackson-databind:${project.jacksonVersion}"
     compile 'com.jakewharton:disklrucache:2.0.2'
+    compile "com.android.support:support-annotations:$supportLib"
 }
 
 task jarTest(type: Jar) {

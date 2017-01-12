@@ -1,5 +1,7 @@
 package com.iagocanalejas.dualcache.interfaces;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by Iagocanalejas on 06/01/2017.
  * Interface containing the methods required
@@ -13,7 +15,7 @@ public interface Cache<K, V> {
      * @param key to find
      * @return true if key is cached false otherwise
      */
-    boolean contains(K key);
+    boolean contains(@NonNull K key);
 
     /**
      * Try to find the given key in the cache.
@@ -21,7 +23,7 @@ public interface Cache<K, V> {
      * @param key to find.
      * @return found value or null.
      */
-    V get(K key);
+    V get(@NonNull K key);
 
     /**
      * Put a new value in the cache.
@@ -30,7 +32,7 @@ public interface Cache<K, V> {
      * @param value to add.
      * @return previous existing object with given key.
      */
-    V put(K key, V value);
+    V put(@NonNull K key, V value);
 
     /**
      * @return if cache do not override {@link SizeOf#sizeOf}, this returns the number
@@ -45,7 +47,7 @@ public interface Cache<K, V> {
      * @param key to remove.
      * @return deleted value or null.
      */
-    V remove(K key);
+    V remove(@NonNull K key);
 
     /**
      * Remove all data in cache.

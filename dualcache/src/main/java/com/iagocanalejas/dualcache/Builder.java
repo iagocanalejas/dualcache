@@ -1,6 +1,7 @@
 package com.iagocanalejas.dualcache;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.iagocanalejas.dualcache.interfaces.Hasher;
 import com.iagocanalejas.dualcache.interfaces.Serializer;
@@ -109,7 +110,7 @@ public class Builder<K, V> {
      * @param hasher {@link Hasher}.
      * @return the builder.
      */
-    public Builder<K, V> useHashedKey(Hasher<K> hasher) {
+    public Builder<K, V> useHashedKey(@NonNull Hasher<K> hasher) {
         this.mKeyMode = DualCacheKeyMode.HASHED_KEY;
         this.mHasher = hasher;
         return this;
@@ -124,7 +125,8 @@ public class Builder<K, V> {
      *                        for the ram cache layer.
      * @return the builder.
      */
-    public Builder<K, V> useSerializerInRam(int maxRamSizeBytes, Serializer<V> serializer) {
+    public Builder<K, V> useSerializerInRam(int maxRamSizeBytes,
+                                            @NonNull Serializer<V> serializer) {
         this.mRamMode = DualCacheRamMode.ENABLE_WITH_SPECIFIC_SERIALIZER;
         this.mMaxRamSizeBytes = maxRamSizeBytes;
         this.mRamSerializer = serializer;
@@ -140,7 +142,7 @@ public class Builder<K, V> {
      * @param handlerSizeOf   computes the size of object stored in ram.
      * @return the builder.
      */
-    public Builder<K, V> useReferenceInRam(int maxRamSizeBytes, SizeOf<V> handlerSizeOf) {
+    public Builder<K, V> useReferenceInRam(int maxRamSizeBytes, @NonNull SizeOf<V> handlerSizeOf) {
         this.mRamMode = DualCacheRamMode.ENABLE_WITH_REFERENCE;
         this.mMaxRamSizeBytes = maxRamSizeBytes;
         this.mSizeOf = handlerSizeOf;
@@ -170,7 +172,8 @@ public class Builder<K, V> {
      * @return the builder.
      */
     public Builder<K, V> useSerializerInDisk(int maxDiskSizeBytes, boolean usePrivateFiles,
-                                             Serializer<V> serializer, Context context) {
+                                             @NonNull Serializer<V> serializer,
+                                             @NonNull Context context) {
 
         File folder = getDefaultDiskCacheFolder(usePrivateFiles, context);
         return useSerializerInDisk(maxDiskSizeBytes, folder, serializer);
@@ -186,8 +189,8 @@ public class Builder<K, V> {
      *                         layer.
      * @return the builder.
      */
-    public Builder<K, V> useSerializerInDisk(int maxDiskSizeBytes, File diskCacheFolder,
-                                             Serializer<V> serializer) {
+    public Builder<K, V> useSerializerInDisk(int maxDiskSizeBytes, @NonNull File diskCacheFolder,
+                                             @NonNull Serializer<V> serializer) {
 
         this.mDiskFolder = diskCacheFolder;
         this.mDiskMode = DualCacheDiskMode.ENABLE_WITH_SPECIFIC_SERIALIZER;

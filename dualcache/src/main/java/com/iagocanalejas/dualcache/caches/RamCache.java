@@ -1,6 +1,7 @@
 package com.iagocanalejas.dualcache.caches;
 
 
+import android.support.annotation.NonNull;
 import android.util.LruCache;
 
 import com.iagocanalejas.dualcache.interfaces.Cache;
@@ -32,7 +33,7 @@ public class RamCache<T> extends LruCache<String, T> implements Cache<String, T>
     }
 
     @Override
-    public boolean contains(String key) {
+    public boolean contains(@NonNull String key) {
         return snapshot().containsKey(key);
     }
 
