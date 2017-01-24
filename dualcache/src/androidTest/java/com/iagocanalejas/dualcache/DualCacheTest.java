@@ -9,6 +9,7 @@ import com.iagocanalejas.dualcache.interfaces.Serializer;
 import com.iagocanalejas.dualcache.interfaces.SizeOf;
 import com.iagocanalejas.dualcache.modes.DualCacheDiskMode;
 import com.iagocanalejas.dualcache.modes.DualCacheRamMode;
+import com.iagocanalejas.dualcache.modes.DualCacheVolatileMode;
 import com.iagocanalejas.dualcache.testobjects.AbstractVehicle;
 import com.iagocanalejas.dualcache.testobjects.CoolBike;
 import com.iagocanalejas.dualcache.testobjects.CoolCar;
@@ -106,6 +107,7 @@ public abstract class DualCacheTest {
             assertEquals(cache.get(keyBike), bike);
             assertEquals(true, cache.contains(keyBike));
         }
+
     }
 
     @Test
@@ -176,6 +178,33 @@ public abstract class DualCacheTest {
             assertEquals(carToEvict, cache.get(keyCar));
             assertEquals(true, cache.contains(keyCar));
         } else {
+            assertNull(cache.get(keyCar));
+            assertEquals(false, cache.contains(keyCar));
+        }
+    }
+
+    @Test
+    public void testVolatileCache() {
+        cache.clear();
+        if (cache.getPersistenceMode().equals(DualCacheVolatileMode.VOLATILE)
+                && (!cache.getDiskMode().equals(DualCacheDiskMode.DISABLE) || !cache.getRamMode().equals(DualCacheRamMode.DISABLE))) {
+            CoolCar car = new CoolCar(CoolCar.class.getSimpleName());
+            String keyCar = "car";
+            cache.put(keyCar, car);
+
+            assertEquals(car, cache.get(keyCar));
+            assertEquals(true, cache.contains(keyCar));
+
+            cache.clear();
+            assertNull(cache.get(keyCar));
+            assertEquals(false, cache.contains(keyCar));
+
+            cache.put(keyCar, car, 1000000);
+
+            assertEquals(car, cache.get(keyCar));
+            assertEquals(true, cache.contains(keyCar));
+
+            cache.clear();
             assertNull(cache.get(keyCar));
             assertEquals(false, cache.contains(keyCar));
         }
